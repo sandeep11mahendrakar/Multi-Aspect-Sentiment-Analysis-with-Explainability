@@ -1,1 +1,1 @@
-11111
+Among traditional ML models, Logistic Regression with TF-IDF features achieved the best performance (~82.3% accuracy), outperforming Linear SVM and Naive Bayes. Logistic Regression was selected due to its strong performance, training efficiency, and compatibility with probability-based explainability methods.

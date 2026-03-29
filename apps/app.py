@@ -918,6 +918,7 @@ st.markdown("<br><br>", unsafe_allow_html=True)
 st.markdown("""
     <div style='text-align: center; padding: 2rem; color: #6b7280; font-size: 0.85rem;'>
         <p>Built with ❤️ using Streamlit | ML Model: Logistic Regression + TF-IDF</p>
-        <p style='margin-top: 0.5rem;'>🎓 Sentiment Analysis Project 2024</p>
+        <p style='margin-top: 0.5rem;'>🎓 Sentiment Analysis Project 2026</p>
+        <p style='margin-top: 0.5rem;'>❤️ github.com/sandeep11mahendrakar </p>
     </div>
 """, unsafe_allow_html=True)

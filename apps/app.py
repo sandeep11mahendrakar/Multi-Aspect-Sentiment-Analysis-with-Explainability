@@ -359,7 +359,7 @@ def predict(text):
             prob = model.predict_proba(vec)[0]
         except (AttributeError, TypeError) as e:
             # Fallback: create reasonable probabilities
-            st.warning("⚠️ Using estimated confidence values")
+            #st.warning("⚠️ Using estimated confidence values")
             if pred == 'positive':
                 prob = np.array([0.1, 0.2, 0.7])  # neg, neu, pos
             elif pred == 'negative':

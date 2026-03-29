@@ -273,10 +273,17 @@ st.markdown("""
 # ------------------------------
 @st.cache_resource
 def load_models():
-    try:
-        # Update these paths to your actual model locations
-        model = joblib.load('models/best_traditional_model.pkl')
-        vectorizer = joblib.load('models/tfidf_vectorizer.pkl')
+    import os
+    
+    # We define the path relative to your project root
+    model_path = os.path.join('notebooks', 'models', 'best_traditional_model.pkl')
+    vec_path = os.path.join('notebooks', 'models', 'tfidf_vectorizer.pkl')
+    
+    # Loading using the relative paths
+    model = joblib.load(model_path)
+    vectorizer = joblib.load(vec_path)
+    
+    return model, vectorizer
         
         # Verify model has necessary methods
         if not hasattr(model, 'predict'):

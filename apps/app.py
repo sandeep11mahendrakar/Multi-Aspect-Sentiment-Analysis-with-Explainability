@@ -1,6 +1,7 @@
 # ==============================
 # MODERN SENTIMENT ANALYSIS APP
 # Bento Box Design | Professional UI
+# VERSION 2.0 - ERROR HANDLED
 # ==============================
 
 import os
@@ -10,6 +11,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 from datetime import datetime
+import numpy as np
 
 # ------------------------------
 # FIX THREAD ISSUE
@@ -267,21 +269,24 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ------------------------------
-# LOAD MODELS
+# LOAD MODELS WITH ERROR HANDLING
 # ------------------------------
 @st.cache_resource
 def load_models():
-    import os
-    
-    # We define the path relative to your project root
-    model_path = os.path.join('notebooks', 'models', 'best_traditional_model.pkl')
-    vec_path = os.path.join('notebooks', 'models', 'tfidf_vectorizer.pkl')
-    
-    # Loading using the relative paths
-    model = joblib.load(model_path)
-    vectorizer = joblib.load(vec_path)
-    
-    return model, vectorizer
+    try:
+        # Update these paths to your actual model locations
+        model = joblib.load('models/best_traditional_model.pkl')
+        vectorizer = joblib.load('models/tfidf_vectorizer.pkl')
+        
+        # Verify model has necessary methods
+        if not hasattr(model, 'predict'):
+            raise ValueError("Model doesn't have predict method")
+        
+        return model, vectorizer
+    except Exception as e:
+        st.error(f"Error loading models: {str(e)}")
+        st.info("Please check model file paths in the code")
+        st.stop()
 
 model, vectorizer = load_models()
 
@@ -326,42 +331,42 @@ with st.sidebar:
             <h4 style='color: #e2e8f0; font-size: 0.9rem; margin-bottom: 0.5rem;'>⚙️ Model Details</h4>
             <div style='font-size: 0.8rem; color: #a0aec0;'>
                 <p style='margin: 0.3rem 0;'>📌 Algorithm: Logistic Regression</p>
-                <p style='margin: 0.3rem 0;'>📌 Features: TF-IDF (5000)</p>
-                <p style='margin: 0.3rem 0;'>📌 Accuracy: 85.3%</p>
+                <p style='margin: 0.3rem 0;'>📌 Features: TF-IDF</p>
                 <p style='margin: 0.3rem 0;'>📌 Classes: 3 (Pos/Neu/Neg)</p>
             </div>
         </div>
     """, unsafe_allow_html=True)
 
 # ------------------------------
-
-# ------------------------------
 # PREDICTION FUNCTION (FIXED)
 # ------------------------------
 def predict(text):
-    """Predict sentiment with error handling"""
+    """Predict sentiment with robust error handling"""
     try:
+        # Transform text
         vec = vectorizer.transform([text])
+        
+        # Get prediction
         pred = model.predict(vec)[0]
         
-        # Safe probability extraction
+        # Get probabilities with fallback
         try:
             prob = model.predict_proba(vec)[0]
-        except AttributeError:
-            # Fallback if predict_proba not available
-            # Create dummy probabilities based on prediction
+        except (AttributeError, TypeError) as e:
+            # Fallback: create reasonable probabilities
+            st.warning("⚠️ Using estimated confidence values")
             if pred == 'positive':
-                prob = [0.1, 0.2, 0.7]  # neg, neu, pos
+                prob = np.array([0.1, 0.2, 0.7])  # neg, neu, pos
             elif pred == 'negative':
-                prob = [0.7, 0.2, 0.1]
+                prob = np.array([0.7, 0.2, 0.1])
             else:  # neutral
-                prob = [0.2, 0.6, 0.2]
+                prob = np.array([0.2, 0.6, 0.2])
         
         return pred, prob
     
     except Exception as e:
-        st.error(f"Prediction error: {str(e)}")
-        return 'neutral', [0.33, 0.34, 0.33]
+        st.error(f"❌ Prediction error: {str(e)}")
+        return 'neutral', np.array([0.33, 0.34, 0.33])
 
 # ------------------------------
 # PLOTLY CHART FUNCTIONS
@@ -538,7 +543,7 @@ if mode == "🧠 Single Review":
                     "quality": ["quality", "material", "fabric", "build", "construction"],
                     "price": ["price", "cheap", "expensive", "cost", "value", "worth"],
                     "size": ["size", "fit", "fitting", "tight", "loose", "small", "large"],
-                    "shipping": ["delivery", "shipping", "arrived", "package", "shipping"]
+                    "shipping": ["delivery", "shipping", "arrived", "package"]
                 }
                 
                 aspect_results = {}
@@ -552,8 +557,7 @@ if mode == "🧠 Single Review":
                         
                         if sentences:
                             text = " ".join(sentences)
-                            vec = vectorizer.transform([text])
-                            a_pred = model.predict(vec)[0]
+                            a_pred, _ = predict(text)
                             aspect_results[aspect] = a_pred
                 
                 col1, col2 = st.columns([1, 1])
@@ -600,43 +604,51 @@ if mode == "🧠 Single Review":
                 # Row 3: Top Signals (Model Explainability)
                 st.markdown("<br>", unsafe_allow_html=True)
                 
-                st.markdown("""
-                    <div class='bento-card'>
-                        <div class='card-header'>🧬 Top Signals (Model Insight)</div>
-                        <p style='color: #a0aec0; font-size: 0.9rem; margin-top: 0.5rem;'>
-                            These words most influenced the model's prediction
-                        </p>
-                    </div>
-                """, unsafe_allow_html=True)
+                try:
+                    st.markdown("""
+                        <div class='bento-card'>
+                            <div class='card-header'>🧬 Top Signals (Model Insight)</div>
+                            <p style='color: #a0aec0; font-size: 0.9rem; margin-top: 0.5rem;'>
+                                These words most influenced the model's prediction
+                            </p>
+                        </div>
+                    """, unsafe_allow_html=True)
+                    
+                    feature_names = vectorizer.get_feature_names_out()
+                    vec = vectorizer.transform([user_input]).toarray()[0]
+                    
+                    if hasattr(model, 'coef_'):
+                        coef = model.coef_[0]
+                        scores = vec * coef
+                        
+                        col1, col2 = st.columns(2)
+                        
+                        with col1:
+                            st.markdown("<h4 style='color: #10b981;'>🔼 Positive Signals</h4>", unsafe_allow_html=True)
+                            top_positive_idx = scores.argsort()[-5:][::-1]
+                            for i in top_positive_idx:
+                                if vec[i] > 0:
+                                    st.markdown(f"""
+                                        <div class='signal-item signal-positive'>
+                                            + {feature_names[i]}
+                                        </div>
+                                    """, unsafe_allow_html=True)
+                        
+                        with col2:
+                            st.markdown("<h4 style='color: #ef4444;'>🔽 Negative Signals</h4>", unsafe_allow_html=True)
+                            top_negative_idx = scores.argsort()[:5]
+                            for i in top_negative_idx:
+                                if vec[i] > 0:
+                                    st.markdown(f"""
+                                        <div class='signal-item signal-negative'>
+                                            - {feature_names[i]}
+                                        </div>
+                                    """, unsafe_allow_html=True)
+                    else:
+                        st.info("Model explainability not available for this model type")
                 
-                feature_names = vectorizer.get_feature_names_out()
-                vec = vectorizer.transform([user_input]).toarray()[0]
-                coef = model.coef_[0]
-                scores = vec * coef
-                
-                col1, col2 = st.columns(2)
-                
-                with col1:
-                    st.markdown("<h4 style='color: #10b981;'>🔼 Positive Signals</h4>", unsafe_allow_html=True)
-                    top_positive_idx = scores.argsort()[-5:][::-1]
-                    for i in top_positive_idx:
-                        if vec[i] > 0:
-                            st.markdown(f"""
-                                <div class='signal-item signal-positive'>
-                                    + {feature_names[i]}
-                                </div>
-                            """, unsafe_allow_html=True)
-                
-                with col2:
-                    st.markdown("<h4 style='color: #ef4444;'>🔽 Negative Signals</h4>", unsafe_allow_html=True)
-                    top_negative_idx = scores.argsort()[:5]
-                    for i in top_negative_idx:
-                        if vec[i] > 0:
-                            st.markdown(f"""
-                                <div class='signal-item signal-negative'>
-                                    - {feature_names[i]}
-                                </div>
-                            """, unsafe_allow_html=True)
+                except Exception as e:
+                    st.info(f"Could not generate feature importance: {str(e)}")
 
 # ==============================
 # MODE 2: BATCH ANALYSIS
@@ -680,9 +692,17 @@ elif mode == "📊 Batch Analysis":
             
             if analyze_all:
                 with st.spinner(f"🧠 Analyzing {len(df)} reviews..."):
-                    vec = vectorizer.transform(df["review_text"])
-                    df["predicted_sentiment"] = model.predict(vec)
-                    df["confidence"] = model.predict_proba(vec).max(axis=1) * 100
+                    # Predict all
+                    predictions = []
+                    confidences = []
+                    
+                    for text in df["review_text"]:
+                        pred, prob = predict(str(text))
+                        predictions.append(pred)
+                        confidences.append(max(prob) * 100)
+                    
+                    df["predicted_sentiment"] = predictions
+                    df["confidence"] = confidences
                     
                     # Summary Stats
                     st.markdown("<br>", unsafe_allow_html=True)
@@ -764,10 +784,7 @@ elif mode == "📊 Batch Analysis":
                     """, unsafe_allow_html=True)
                     
                     st.dataframe(
-                        df[['review_text', 'predicted_sentiment', 'confidence']].style.background_gradient(
-                            subset=['confidence'],
-                            cmap='viridis'
-                        ),
+                        df[['review_text', 'predicted_sentiment', 'confidence']],
                         use_container_width=True,
                         height=400
                     )
@@ -829,9 +846,7 @@ elif mode == "🔍 Aspect Deep Dive":
                     
                     if sentences:
                         aspect_text = " ".join(sentences)
-                        vec = vectorizer.transform([aspect_text])
-                        pred = model.predict(vec)[0]
-                        prob = model.predict_proba(vec)[0]
+                        pred, prob = predict(aspect_text)
                         confidence = max(prob) * 100
                         
                         found_aspects[aspect] = {
@@ -904,6 +919,5 @@ st.markdown("""
     <div style='text-align: center; padding: 2rem; color: #6b7280; font-size: 0.85rem;'>
         <p>Built with ❤️ using Streamlit | ML Model: Logistic Regression + TF-IDF</p>
         <p style='margin-top: 0.5rem;'>🎓 Sentiment Analysis Project 2024</p>
-        <p style='margin-top: 0.5rem;'>github.com/sandeep11mahendrakar</p>
     </div>
 """, unsafe_allow_html=True)

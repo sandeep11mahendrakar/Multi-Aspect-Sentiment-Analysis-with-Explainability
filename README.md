@@ -145,7 +145,7 @@ streamlit run app.py
 ## 📬 Contact
 
 * Name: Sandeep
-* LinkedIn: [your link]
+* LinkedIn: (https://www.linkedin.com/in/sandeep-mahindrakar-336b972b9/)
 * GitHub: [your repo link]
 
 ---

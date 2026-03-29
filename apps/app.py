@@ -377,50 +377,48 @@ def predict(text):
 # PLOTLY CHART FUNCTIONS
 # ------------------------------
 def create_confidence_chart(probabilities):
-    """Create a beautiful confidence distribution chart"""
-    
-    # Get actual class order from model
-    class_order = list(model.classes_)  # e.g. ['negative', 'neutral', 'positive']
-    
-    label_map = {'negative': 'Negative', 'neutral': 'Neutral', 'positive': 'Positive'}
-    color_map = {'negative': '#ef4444', 'neutral': '#6b7280', 'positive': '#10b981'}
-    
-    labels = [label_map.get(c, c) for c in class_order]
-    colors = [color_map.get(c, '#667eea') for c in class_order]
-    values = probabilities * 100  # prob is in 0-1 decimal form
+    try:
+        labels = ['Negative', 'Neutral', 'Positive']
+        colors = ['#ef4444', '#6b7280', '#10b981']
+        
+        # Ensure probabilities is a flat numpy array of length 3
+        prob_array = np.array(probabilities).flatten()
+        if len(prob_array) != 3:
+            prob_array = np.array([0.33, 0.34, 0.33])
+        
+        values = [float(p * 100) for p in prob_array]  # explicit float list
 
-    fig = go.Figure(data=[
-        go.Bar(
-            x=labels,
-            y=values,
-            marker=dict(
-                color=colors,
-                line=dict(color='rgba(255,255,255,0.2)', width=1)
+        fig = go.Figure(data=[
+            go.Bar(
+                x=labels,
+                y=values,
+                marker=dict(color=colors),
+                text=[f'{v:.1f}%' for v in values],
+                textposition='outside',
+                textfont=dict(color='#e2e8f0', size=14, family='Inter')
+            )
+        ])
+
+        fig.update_layout(
+            plot_bgcolor='rgba(0,0,0,0)',
+            paper_bgcolor='rgba(0,0,0,0)',
+            font=dict(color='#e2e8f0', family='Inter'),
+            yaxis=dict(
+                showgrid=True,
+                gridcolor='rgba(255,255,255,0.05)',
+                title='Confidence (%)',
+                range=[0, 110]
             ),
-            text=[f'{v:.1f}%' for v in values],
-            textposition='outside',
-            textfont=dict(color='#e2e8f0', size=14, family='Inter')
+            xaxis=dict(title='', type='category'),
+            margin=dict(t=40, b=20, l=20, r=20),
+            height=300,
+            showlegend=False
         )
-    ])
-    
-    fig.update_layout(
-    plot_bgcolor='rgba(0,0,0,0)',
-    paper_bgcolor='rgba(0,0,0,0)',
-    font=dict(color='#e2e8f0', family='Inter'),
-    yaxis=dict(
-        showgrid=True,
-        gridcolor='rgba(255,255,255,0.05)',
-        title='Confidence (%)',
-        range=[0, 110]
-    ),
-    xaxis=dict(
-        title='',
-        type='category'  # 👈 forces discrete bars, not continuous axis
-    ),
-    margin=dict(t=40, b=20, l=20, r=20),
-    height=300,
-    showlegend=False
-)
+        return fig
+
+    except Exception as e:
+        st.error(f"Chart build error: {e}")
+        return None
 
 
 def create_aspect_chart(aspect_results):
@@ -547,9 +545,17 @@ if mode == "🧠 Single Review":
                             <div class='card-header'>📊 Confidence Distribution</div>
                         </div>
                     """, unsafe_allow_html=True)
+
+                    try:
+                        fig = create_confidence_chart(prob)
+                        if fig if not None:
+                            st.plotly_chart(fig, use_container_width=True)
+                        else:
+                            st.error("chart could not be generated.")
+                    except Exception as e:
+                        st.error(f"Chart error: {e}")
                     
-                    fig = create_confidence_chart(prob)
-                    st.plotly_chart(fig, use_container_width=True)
+
                 
                 # Row 2: Aspect Analysis
                 st.markdown("<br>", unsafe_allow_html=True)

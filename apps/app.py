@@ -548,10 +548,11 @@ if mode == "🧠 Single Review":
 
                     try:
                         fig = create_confidence_chart(prob)
-                        if fig if not None:
+                        # FIX: Changed 'if fig if not None' to 'if fig is not None'
+                        if fig is not None:
                             st.plotly_chart(fig, use_container_width=True)
                         else:
-                            st.error("chart could not be generated.")
+                            st.error("Chart could not be generated.")
                     except Exception as e:
                         st.error(f"Chart error: {e}")
                     

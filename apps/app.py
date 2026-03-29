@@ -421,8 +421,9 @@ fig.update_layout(
     height=300,
     showlegend=False
 )
-    
-return fig
+    return fig
+
+
 def create_aspect_chart(aspect_results):
     """Create aspect sentiment distribution chart"""
     aspects = list(aspect_results.keys())

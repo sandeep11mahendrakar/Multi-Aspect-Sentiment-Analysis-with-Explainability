@@ -274,29 +274,27 @@ st.markdown("""
 @st.cache_resource
 def load_models():
     import os
-    
-    # We define the path relative to your project root
-    model_path = os.path.join('notebooks', 'models', 'best_traditional_model.pkl')
-    vec_path = os.path.join('notebooks', 'models', 'tfidf_vectorizer.pkl')
-    
-    # Loading using the relative paths
-    model = joblib.load(model_path)
-    vectorizer = joblib.load(vec_path)
-    
-    return model, vectorizer
+    import joblib
+    try:
+        # Define relative paths for Linux (Cloud) and Windows (Local) compatibility
+        model_path = os.path.join('notebooks', 'models', 'best_traditional_model.pkl')
+        vec_path = os.path.join('notebooks', 'models', 'tfidf_vectorizer.pkl')
         
-    # Verify model has necessary methods
-    if not hasattr(model, 'predict'):
-        raise ValueError("Model doesn't have predict method")
+        # Load the artifacts
+        model = joblib.load(model_path)
+        vectorizer = joblib.load(vec_path)
         
-    return model, vectorizer
+        # Validation
+        if not hasattr(model, 'predict'):
+            raise ValueError("The loaded model object is invalid.")
+            
+        return model, vectorizer
     except Exception as e:
-        st.error(f"Error loading models: {str(e)}")
-        st.info("Please check model file paths in the code")
+        st.error(f"🚨 Deployment Error: {str(e)}")
+        st.info("Ensure the .pkl files are in 'notebooks/models/' on GitHub.")
         st.stop()
 
 model, vectorizer = load_models()
-
 # ------------------------------
 # HEADER
 # ------------------------------

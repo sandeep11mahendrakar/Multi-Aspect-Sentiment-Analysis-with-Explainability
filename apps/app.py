@@ -378,18 +378,26 @@ def predict(text):
 # ------------------------------
 def create_confidence_chart(probabilities):
     """Create a beautiful confidence distribution chart"""
-    labels = ['Negative', 'Neutral', 'Positive']
-    colors = ['#ef4444', '#6b7280', '#10b981']
     
+    # Get actual class order from model
+    class_order = list(model.classes_)  # e.g. ['negative', 'neutral', 'positive']
+    
+    label_map = {'negative': 'Negative', 'neutral': 'Neutral', 'positive': 'Positive'}
+    color_map = {'negative': '#ef4444', 'neutral': '#6b7280', 'positive': '#10b981'}
+    
+    labels = [label_map.get(c, c) for c in class_order]
+    colors = [color_map.get(c, '#667eea') for c in class_order]
+    values = probabilities * 100  # prob is in 0-1 decimal form
+
     fig = go.Figure(data=[
         go.Bar(
             x=labels,
-            y=probabilities * 100,
+            y=values,
             marker=dict(
                 color=colors,
                 line=dict(color='rgba(255,255,255,0.2)', width=1)
             ),
-            text=[f'{p*100:.1f}%' for p in probabilities],
+            text=[f'{v:.1f}%' for v in values],
             textposition='outside',
             textfont=dict(color='#e2e8f0', size=14, family='Inter')
         )
@@ -403,16 +411,15 @@ def create_confidence_chart(probabilities):
             showgrid=True,
             gridcolor='rgba(255,255,255,0.05)',
             title='Confidence (%)',
-            range=[0, 100]
+            range=[0, 110]  # extra room for text labels above bars
         ),
         xaxis=dict(title=''),
-        margin=dict(t=20, b=20, l=20, r=20),
+        margin=dict(t=40, b=20, l=20, r=20),
         height=300,
         showlegend=False
     )
     
     return fig
-
 def create_aspect_chart(aspect_results):
     """Create aspect sentiment distribution chart"""
     aspects = list(aspect_results.keys())

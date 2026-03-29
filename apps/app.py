@@ -403,7 +403,7 @@ def create_confidence_chart(probabilities):
         )
     ])
     
-fig.update_layout(
+    fig.update_layout(
     plot_bgcolor='rgba(0,0,0,0)',
     paper_bgcolor='rgba(0,0,0,0)',
     font=dict(color='#e2e8f0', family='Inter'),
@@ -421,7 +421,6 @@ fig.update_layout(
     height=300,
     showlegend=False
 )
-    return fig
 
 
 def create_aspect_chart(aspect_results):

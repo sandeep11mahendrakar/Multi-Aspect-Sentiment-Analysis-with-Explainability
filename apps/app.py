@@ -271,8 +271,16 @@ st.markdown("""
 # ------------------------------
 @st.cache_resource
 def load_models():
-    model = joblib.load(r'C:\Users\sande\Downloads\pes\sem 6\vs code\ml project\sentiment-analysis-project\notebooks\models\best_traditional_model.pkl')
-    vectorizer = joblib.load(r'C:\Users\sande\Downloads\pes\sem 6\vs code\ml project\sentiment-analysis-project\notebooks\models\tfidf_vectorizer.pkl')
+    import os
+    
+    # We define the path relative to your project root
+    model_path = os.path.join('notebooks', 'models', 'best_traditional_model.pkl')
+    vec_path = os.path.join('notebooks', 'models', 'tfidf_vectorizer.pkl')
+    
+    # Loading using the relative paths
+    model = joblib.load(model_path)
+    vectorizer = joblib.load(vec_path)
+    
     return model, vectorizer
 
 model, vectorizer = load_models()

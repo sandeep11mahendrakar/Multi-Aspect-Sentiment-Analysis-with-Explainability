@@ -67,7 +67,7 @@ This project builds an end-to-end sentiment analysis system that:
 
 ## 🖥️ Demo
 
-![App Screenshot](results/figures/demo.png)
+![App Screenshot](results/figures/app_demo_1.png)
 
 ---
 

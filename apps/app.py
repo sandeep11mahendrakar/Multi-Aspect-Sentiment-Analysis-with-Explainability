@@ -403,21 +403,24 @@ def create_confidence_chart(probabilities):
         )
     ])
     
-    fig.update_layout(
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)',
-        font=dict(color='#e2e8f0', family='Inter'),
-        yaxis=dict(
-            showgrid=True,
-            gridcolor='rgba(255,255,255,0.05)',
-            title='Confidence (%)',
-            range=[0, 110]  # extra room for text labels above bars
-        ),
-        xaxis=dict(title=''),
-        margin=dict(t=40, b=20, l=20, r=20),
-        height=300,
-        showlegend=False
-    )
+fig.update_layout(
+    plot_bgcolor='rgba(0,0,0,0)',
+    paper_bgcolor='rgba(0,0,0,0)',
+    font=dict(color='#e2e8f0', family='Inter'),
+    yaxis=dict(
+        showgrid=True,
+        gridcolor='rgba(255,255,255,0.05)',
+        title='Confidence (%)',
+        range=[0, 110]
+    ),
+    xaxis=dict(
+        title='',
+        type='category'  # 👈 forces discrete bars, not continuous axis
+    ),
+    margin=dict(t=40, b=20, l=20, r=20),
+    height=300,
+    showlegend=False
+)
     
     return fig
 def create_aspect_chart(aspect_results):

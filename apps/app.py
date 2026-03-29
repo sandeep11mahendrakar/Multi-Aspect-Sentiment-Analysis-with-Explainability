@@ -285,11 +285,11 @@ def load_models():
     
     return model, vectorizer
         
-        # Verify model has necessary methods
-        if not hasattr(model, 'predict'):
-            raise ValueError("Model doesn't have predict method")
+    # Verify model has necessary methods
+    if not hasattr(model, 'predict'):
+        raise ValueError("Model doesn't have predict method")
         
-        return model, vectorizer
+    return model, vectorizer
     except Exception as e:
         st.error(f"Error loading models: {str(e)}")
         st.info("Please check model file paths in the code")

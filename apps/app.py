@@ -274,23 +274,16 @@ st.markdown("""
 # ------------------------------
 # LOAD MODELS WITH ERROR HANDLING
 # ------------------------------
+# ------------------------------
+# LOAD MODELS (CLOUD & LOCAL COMPATIBLE)
+# ------------------------------
 @st.cache_resource
 def load_models():
-<<<<<<< HEAD
-    import os
-    import joblib
     try:
-        # Define relative paths for Linux (Cloud) and Windows (Local) compatibility
-        model_path = os.path.join('notebooks', 'models', 'best_traditional_model.pkl')
-        vec_path = os.path.join('notebooks', 'models', 'tfidf_vectorizer.pkl')
-=======
-    try:
-
-        # Simple relative paths (Works great on Streamlit Cloud!)
-        model_path = "notebooks/models/best_traditional_model.pkl"
-        vec_path = "notebooks/models/tfidf_vectorizer.pkl"
-        # Hardcoded absolute paths for LOCAL TESTING ONLY
->>>>>>> 854a4d2 (Cleaned up app.py and fixed deployment paths)
+        # Dynamic absolute paths that work safely anywhere
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        model_path = os.path.join(current_dir, 'notebooks', 'models', 'best_traditional_model.pkl')
+        vec_path = os.path.join(current_dir, 'notebooks', 'models', 'tfidf_vectorizer.pkl')
         
         # Load the artifacts
         model = joblib.load(model_path)
@@ -301,15 +294,10 @@ def load_models():
             raise ValueError("The loaded model object is invalid.")
             
         return model, vectorizer
-<<<<<<< HEAD
-    except Exception as e:
-        st.error(f"🚨 Deployment Error: {str(e)}")
-        st.info("Ensure the .pkl files are in 'notebooks/models/' on GitHub.")
-=======
         
     except Exception as e:
         st.error(f"🚨 Error loading models: {str(e)}")
->>>>>>> 854a4d2 (Cleaned up app.py and fixed deployment paths)
+        st.info(f"Ensure the .pkl files are exactly at: {model_path}")
         st.stop()
 
 # Initialize models

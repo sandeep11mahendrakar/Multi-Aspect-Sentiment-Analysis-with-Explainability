@@ -4,6 +4,8 @@
 # 🎭 Multi-Aspect Sentiment Analysis with Explainability
 
 > Not just *what* customers feel — but *why they feel it.*
+>
+> currently the deployed version is not working correctly the result are struck at 70%, but in local host is working properply 
 
 🚀 **Live Demo:**  
 https://multi-aspect-sentiment-analysis-with-explainability-xgmjnje4xv.streamlit.app

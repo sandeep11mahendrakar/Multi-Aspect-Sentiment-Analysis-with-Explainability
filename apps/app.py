@@ -286,8 +286,8 @@ def load_models():
 =======
     try:
         # Hardcoded absolute paths for LOCAL TESTING ONLY
-        model_path = r"C:\Users\sande\Downloads\pes\sem 6\vs code\ml project\sentiment-analysis-project\notebooks\models\best_traditional_model.pkl"
-        vec_path = r"C:\Users\sande\Downloads\pes\sem 6\vs code\ml project\sentiment-analysis-project\notebooks\models\tfidf_vectorizer.pkl"
+        model_path = "sentiment-analysis-project\notebooks\models\best_traditional_model.pkl"
+        vec_path = "sentiment-analysis-project\notebooks\models\tfidf_vectorizer.pkl"
 >>>>>>> 854a4d2 (Cleaned up app.py and fixed deployment paths)
         
         # Load the artifacts

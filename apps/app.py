@@ -270,7 +270,7 @@ st.markdown("""
 # ------------------------------
 # LOAD MODELS (CLOUD & LOCAL COMPATIBLE)
 # ------------------------------
-@st.cache_resource
+'''@st.cache_resource
 def load_models():
     import os
     import joblib
@@ -302,7 +302,29 @@ def load_models():
         st.stop()
 
 # Initialize models
-model, vectorizer = load_models()
+model, vectorizer = load_models()'''
+
+
+@st.cache_resource
+def load_models():
+    try:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        root_dir = os.path.dirname(current_dir)
+        
+        model_path = os.path.join(root_dir, 'notebooks', 'models', 'best_traditional_model.pkl')
+        vec_path = os.path.join(root_dir, 'notebooks', 'models', 'tfidf_vectorizer.pkl')
+        
+        model = joblib.load(model_path)
+        vectorizer = joblib.load(vec_path)
+
+        # ✅ Patch removed attribute so predict_proba works on newer sklearn
+        if not hasattr(model, 'multi_class'):
+            model.multi_class = 'auto'
+        
+        return model, vectorizer
+    except Exception as e:
+        st.error(f"🚨 Error loading models: {str(e)}")
+        st.stop()
 # ------------------------------
 # PREDICTION FUNCTION
 # ------------------------------

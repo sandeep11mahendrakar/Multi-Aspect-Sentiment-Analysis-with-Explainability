@@ -317,14 +317,17 @@ def load_models():
         model = joblib.load(model_path)
         vectorizer = joblib.load(vec_path)
 
-        # ✅ Patch removed attribute so predict_proba works on newer sklearn
+        # Patch ALL attributes that newer sklearn removed
         if not hasattr(model, 'multi_class'):
             model.multi_class = 'auto'
-        
+        if not hasattr(model, 'l1_ratio'):
+            model.l1_ratio = None
+
         return model, vectorizer
     except Exception as e:
         st.error(f"🚨 Error loading models: {str(e)}")
         st.stop()
+
 # ------------------------------
 # PREDICTION FUNCTION
 # ------------------------------

@@ -272,11 +272,19 @@ st.markdown("""
 # ------------------------------
 @st.cache_resource
 def load_models():
+    import os
+    import joblib
+    import streamlit as st
     try:
-        # Dynamic absolute paths that work safely anywhere
+        # 1. Get the directory of app.py (which is the 'apps' folder)
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        model_path = os.path.join(current_dir, 'notebooks', 'models', 'best_traditional_model.pkl')
-        vec_path = os.path.join(current_dir, 'notebooks', 'models', 'tfidf_vectorizer.pkl')
+        
+        # 2. Go up one level to the main project root folder
+        root_dir = os.path.dirname(current_dir)
+        
+        # 3. Build the correct path down into the notebooks folder
+        model_path = os.path.join(root_dir, 'notebooks', 'models', 'best_traditional_model.pkl')
+        vec_path = os.path.join(root_dir, 'notebooks', 'models', 'tfidf_vectorizer.pkl')
         
         # Load the artifacts
         model = joblib.load(model_path)
@@ -295,7 +303,6 @@ def load_models():
 
 # Initialize models
 model, vectorizer = load_models()
-
 # ------------------------------
 # PREDICTION FUNCTION
 # ------------------------------

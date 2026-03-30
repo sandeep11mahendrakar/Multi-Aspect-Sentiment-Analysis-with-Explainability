@@ -285,9 +285,11 @@ def load_models():
         vec_path = os.path.join('notebooks', 'models', 'tfidf_vectorizer.pkl')
 =======
     try:
+
+        # Simple relative paths (Works great on Streamlit Cloud!)
+        model_path = "notebooks/models/best_traditional_model.pkl"
+        vec_path = "notebooks/models/tfidf_vectorizer.pkl"
         # Hardcoded absolute paths for LOCAL TESTING ONLY
-        model_path = "sentiment-analysis-project\notebooks\models\best_traditional_model.pkl"
-        vec_path = "sentiment-analysis-project\notebooks\models\tfidf_vectorizer.pkl"
 >>>>>>> 854a4d2 (Cleaned up app.py and fixed deployment paths)
         
         # Load the artifacts

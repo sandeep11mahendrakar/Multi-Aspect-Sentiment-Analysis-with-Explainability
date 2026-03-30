@@ -1,7 +1,11 @@
 # ==============================
 # MODERN SENTIMENT ANALYSIS APP
 # Bento Box Design | Professional UI
+<<<<<<< HEAD
 # VERSION 2.0 - ERROR HANDLED
+=======
+# VERSION 2.0 - CLEANED & DEPLOYMENT READY
+>>>>>>> 854a4d2 (Cleaned up app.py and fixed deployment paths)
 # ==============================
 
 import os
@@ -9,7 +13,6 @@ import streamlit as st
 import joblib
 import pandas as pd
 import plotly.graph_objects as go
-import plotly.express as px
 from datetime import datetime
 import numpy as np
 
@@ -273,12 +276,19 @@ st.markdown("""
 # ------------------------------
 @st.cache_resource
 def load_models():
+<<<<<<< HEAD
     import os
     import joblib
     try:
         # Define relative paths for Linux (Cloud) and Windows (Local) compatibility
         model_path = os.path.join('notebooks', 'models', 'best_traditional_model.pkl')
         vec_path = os.path.join('notebooks', 'models', 'tfidf_vectorizer.pkl')
+=======
+    try:
+        # Hardcoded absolute paths for LOCAL TESTING ONLY
+        model_path = r"C:\Users\sande\Downloads\pes\sem 6\vs code\ml project\sentiment-analysis-project\notebooks\models\best_traditional_model.pkl"
+        vec_path = r"C:\Users\sande\Downloads\pes\sem 6\vs code\ml project\sentiment-analysis-project\notebooks\models\tfidf_vectorizer.pkl"
+>>>>>>> 854a4d2 (Cleaned up app.py and fixed deployment paths)
         
         # Load the artifacts
         model = joblib.load(model_path)
@@ -289,13 +299,21 @@ def load_models():
             raise ValueError("The loaded model object is invalid.")
             
         return model, vectorizer
+<<<<<<< HEAD
     except Exception as e:
         st.error(f"🚨 Deployment Error: {str(e)}")
         st.info("Ensure the .pkl files are in 'notebooks/models/' on GitHub.")
+=======
+        
+    except Exception as e:
+        st.error(f"🚨 Error loading models: {str(e)}")
+>>>>>>> 854a4d2 (Cleaned up app.py and fixed deployment paths)
         st.stop()
 
+# Initialize models
 model, vectorizer = load_models()
 # ------------------------------
+<<<<<<< HEAD
 # HEADER
 # ------------------------------
 st.markdown("""
@@ -344,6 +362,9 @@ with st.sidebar:
 
 # ------------------------------
 # PREDICTION FUNCTION (FIXED)
+=======
+# PREDICTION FUNCTION
+>>>>>>> 854a4d2 (Cleaned up app.py and fixed deployment paths)
 # ------------------------------
 def predict(text):
     """Predict sentiment with robust error handling"""
@@ -356,10 +377,24 @@ def predict(text):
         
         # Get probabilities with fallback
         try:
+<<<<<<< HEAD
             prob = model.predict_proba(vec)[0]
         except (AttributeError, TypeError) as e:
             # Fallback: create reasonable probabilities
             #st.warning("⚠️ Using estimated confidence values")
+=======
+            # Force numpy array so * 100 math always works downstream
+            prob = np.array(model.predict_proba(vec)[0])
+            
+            # Debug lines commented out to keep UI clean
+            # st.write("DEBUG classes:", model.classes_)   
+            # st.write("DEBUG prob:", prob)                
+            
+        except (AttributeError, TypeError) as e:
+            st.error(f"predict_proba failed: {e}")       
+            
+            # Fallback: create reasonable probabilities
+>>>>>>> 854a4d2 (Cleaned up app.py and fixed deployment paths)
             if pred == 'positive':
                 prob = np.array([0.1, 0.2, 0.7])  # neg, neu, pos
             elif pred == 'negative':
@@ -470,6 +505,54 @@ def create_aspect_chart(aspect_results):
     
     return fig
 
+# ------------------------------
+# HEADER
+# ------------------------------
+st.markdown("""
+    <div style='text-align: center; margin-bottom: 3rem;'>
+        <h1 class='main-title'>🎭 Sentiment Analysis Pro</h1>
+        <p class='subtitle'>Advanced AI-powered review analysis with aspect extraction & model explainability</p>
+    </div>
+""", unsafe_allow_html=True)
+
+# ------------------------------
+# SIDEBAR
+# ------------------------------
+with st.sidebar:
+    st.markdown("### 🎯 Analysis Mode")
+    mode = st.selectbox(
+        "Choose your analysis type",
+        ["🧠 Single Review", "📊 Batch Analysis", "🔍 Aspect Deep Dive"],
+        label_visibility="collapsed"
+    )
+    
+    st.markdown("---")
+    
+    st.markdown("""
+        <div style='padding: 1rem; background: rgba(102, 126, 234, 0.1); border-radius: 10px; border: 1px solid rgba(102, 126, 234, 0.3);'>
+            <h4 style='color: #667eea; margin: 0 0 0.5rem 0;'>💡 About</h4>
+            <p style='font-size: 0.85rem; color: #a0aec0; margin: 0;'>
+                This app uses machine learning to analyze sentiment in product reviews, 
+                extract aspect-level insights, and explain predictions.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("---")
+    
+    # Model Info
+    st.markdown("""
+        <div style='padding: 1rem;'>
+            <h4 style='color: #e2e8f0; font-size: 0.9rem; margin-bottom: 0.5rem;'>⚙️ Model Details</h4>
+            <div style='font-size: 0.8rem; color: #a0aec0;'>
+                <p style='margin: 0.3rem 0;'>📌 Algorithm: Logistic Regression</p>
+                <p style='margin: 0.3rem 0;'>📌 Features: TF-IDF</p>
+                <p style='margin: 0.3rem 0;'>📌 Classes: 3 (Pos/Neu/Neg)</p>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+
 # ==============================
 # MODE 1: SINGLE REVIEW ANALYSIS
 # ==============================
@@ -548,7 +631,10 @@ if mode == "🧠 Single Review":
 
                     try:
                         fig = create_confidence_chart(prob)
+<<<<<<< HEAD
                         # FIX: Changed 'if fig if not None' to 'if fig is not None'
+=======
+>>>>>>> 854a4d2 (Cleaned up app.py and fixed deployment paths)
                         if fig is not None:
                             st.plotly_chart(fig, use_container_width=True)
                         else:
@@ -556,7 +642,10 @@ if mode == "🧠 Single Review":
                     except Exception as e:
                         st.error(f"Chart error: {e}")
                     
+<<<<<<< HEAD
 
+=======
+>>>>>>> 854a4d2 (Cleaned up app.py and fixed deployment paths)
                 
                 # Row 2: Aspect Analysis
                 st.markdown("<br>", unsafe_allow_html=True)

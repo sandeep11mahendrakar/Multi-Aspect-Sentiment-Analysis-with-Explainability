@@ -342,6 +342,13 @@ def load_models():
         model = joblib.load(model_path)
         vectorizer = joblib.load(vec_path)
 
+        # Models saved with older scikit-learn releases do not contain every
+        # attribute expected by newer releases during predict_proba().
+        if not hasattr(model, "multi_class"):
+            model.multi_class = "auto"
+        if not hasattr(model, "l1_ratio"):
+            model.l1_ratio = None
+
         required_model_attributes = ("predict", "predict_proba", "classes_")
         if not all(hasattr(model, attribute) for attribute in required_model_attributes):
             raise RuntimeError("The loaded model does not support probability predictions.")

@@ -294,7 +294,7 @@ st.markdown("""
 # ------------------------------
 # LOAD MODELS (CLOUD & LOCAL COMPATIBLE)
 # ------------------------------
-'''@st.cache_resource
+_LEGACY_MODEL_LOADING_REFERENCE = '''@st.cache_resource
 def load_models():
     import os
     import joblib

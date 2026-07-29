@@ -41,9 +41,10 @@ st.markdown("""
     }
     
     /* Main Container */
-    .main {
+    .main > div:first-child {
         background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
         padding: 2rem;
+        min-height: 100vh;
     }
     
     /* Hide Streamlit Branding */
@@ -210,7 +211,11 @@ st.markdown("""
     }
     
     /* Sidebar Styling */
-    .css-1d391kg {
+    section[data-testid="stSidebar"] {
+        background: rgba(26, 26, 46, 0.95);
+    }
+
+    section[data-testid="stSidebar"] > div {
         background: rgba(26, 26, 46, 0.95);
     }
     
@@ -264,6 +269,25 @@ st.markdown("""
         gap: 1rem;
         margin: 1.5rem 0;
     }
+
+    [data-testid="stHorizontalBlock"] {
+        gap: 1.25rem;
+    }
+
+    @media (max-width: 768px) {
+        .main > div:first-child {
+            padding: 1rem;
+        }
+
+        .main-title {
+            font-size: 2.25rem;
+        }
+
+        .bento-card {
+            padding: 1.25rem;
+            border-radius: 16px;
+        }
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -305,8 +329,9 @@ def load_models():
 model, vectorizer = load_models()'''
 
 
-@st.cache_resource
+@st.cache_resource(show_spinner="Loading sentiment model…")
 def load_models():
+    """Load and validate the model artifacts exactly once per Streamlit process."""
     try:
         current_dir = os.path.dirname(os.path.abspath(__file__))
         root_dir = os.path.dirname(current_dir)
@@ -317,21 +342,29 @@ def load_models():
         model = joblib.load(model_path)
         vectorizer = joblib.load(vec_path)
 
-        # Patch ALL attributes that newer sklearn removed
-        if not hasattr(model, 'multi_class'):
-            model.multi_class = 'auto'
-        if not hasattr(model, 'l1_ratio'):
-            model.l1_ratio = None
+        required_model_attributes = ("predict", "predict_proba", "classes_")
+        if not all(hasattr(model, attribute) for attribute in required_model_attributes):
+            raise RuntimeError("The loaded model does not support probability predictions.")
+        if not hasattr(vectorizer, "transform"):
+            raise RuntimeError("The loaded TF-IDF vectorizer is invalid.")
+        if set(model.classes_) != {"negative", "neutral", "positive"}:
+            raise RuntimeError(
+                "The model must contain negative, neutral, and positive classes. "
+                f"Found: {list(model.classes_)}"
+            )
 
         return model, vectorizer
     except Exception as e:
         st.error(f"🚨 Error loading models: {str(e)}")
         st.stop()
 
+
+model, vectorizer = load_models()
+
 # ------------------------------
-# PREDICTION FUNCTION
+# LEGACY PREDICTION FUNCTION (kept temporarily for reference)
 # ------------------------------
-def predict(text):
+def _legacy_predict(text):
     """Predict sentiment with robust error handling"""
     try:
         # Transform text
@@ -367,6 +400,31 @@ def predict(text):
         return 'neutral', np.array([0.33, 0.34, 0.33])
 
 # ------------------------------
+# PREDICTION IMPLEMENTATION
+# ------------------------------
+def predict(text):
+    """Return the model's real probabilities in negative, neutral, positive order."""
+    vector = vectorizer.transform([text])
+    prediction = str(model.predict(vector)[0])
+    raw_probabilities = np.asarray(model.predict_proba(vector)[0], dtype=np.float64).flatten()
+
+    if len(raw_probabilities) != len(model.classes_):
+        raise RuntimeError("The model returned an invalid probability vector.")
+    if not np.all(np.isfinite(raw_probabilities)) or np.any(raw_probabilities < 0):
+        raise RuntimeError("The model returned invalid probability values.")
+
+    probabilities_by_class = dict(zip(model.classes_, raw_probabilities))
+    probabilities = np.array(
+        [probabilities_by_class[label] for label in ("negative", "neutral", "positive")],
+        dtype=np.float64,
+    )
+    total = probabilities.sum()
+    if total <= 0:
+        raise RuntimeError("The model returned probabilities with a zero total.")
+    return prediction, probabilities / total
+
+
+# ------------------------------
 # PLOTLY CHART FUNCTIONS
 # ------------------------------
 def create_confidence_chart(probabilities):
@@ -375,9 +433,9 @@ def create_confidence_chart(probabilities):
         colors = ['#ef4444', '#6b7280', '#10b981']
         
         # Ensure probabilities is a flat numpy array of length 3
-        prob_array = np.array(probabilities).flatten()
-        if len(prob_array) != 3:
-            prob_array = np.array([0.33, 0.34, 0.33])
+        prob_array = np.asarray(probabilities, dtype=np.float64).flatten()
+        if len(prob_array) != 3 or not np.all(np.isfinite(prob_array)):
+            raise ValueError("Expected three finite probability values.")
         
         values = [float(p * 100) for p in prob_array]  # explicit float list
 

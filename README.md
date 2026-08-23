@@ -1,133 +1,55 @@
+# 🎯 Sentiment Analysis Pro — Gated DistilBERT + Aspect Sentiment
 
+> Not just *what* customers feel — but *why*, and an honest **"I'm not sure"** when the model can't tell.
 
-
-# 🎭 Multi-Aspect Sentiment Analysis with Explainability
-
-> Not just *what* customers feel — but *why they feel it.*
-
-🚀 **Live Demo:**  
-https://multi-aspect-sentiment-analysis-with-explainability-xgmjnje4xv.streamlit.app
+**Live demo (HF Space):** _pending first Space push_
+**Models on the HF Hub:** _pending upload — see `src/experiments/upload_deploy_to_hf.py`_
 
 ---
 
-## 🧠 What This Project Does
+## What This Project Does
 
-Most sentiment analysis systems stop at **positive / negative classification**.
+Most sentiment systems force every review into positive / negative. This one doesn't:
 
-This system goes further:
-
-✔ Detects overall sentiment  
-✔ Breaks sentiment into **specific aspects** (quality, price, size, shipping)  
-✔ Explains *why* the model made a prediction  
-✔ Provides a **real-time interactive dashboard**
+- **Doc-level sentiment** with a fine-tuned DistilBERT, scored on a **1–10 scale** with − / ± / + bands
+- **Selective prediction:** below confidence **τ = 0.70** the model **abstains** (`UNSURE / MIXED`) instead of guessing
+- **Aspect-based sentiment** (quality / price / fit) via a consensus-filtered ABSA model
+- **Batch CSV → scored CSV:** sorted by score, unsure rows sectioned at the bottom, summary dashboard included
 
 ---
 
-## ⚠️ The Real Problem
+## The Honest Numbers (measured, held-out n = 4,529)
 
-Companies don’t struggle with *data*.  
-They struggle with **understanding it**.
+| Operating point | Coverage | Committed acc | Committed macroF1 | Abstains |
+|-----------------|----------|---------------|-------------------|----------|
+| τ = 0.70 (deployed) | 86.2% | **91.2%** | .715 | 13.8% |
+| τ = 0.80 | 77.8% | 95.1% | .690 | 22.2% |
+| No gate (full test) | 100% | 85.5% | .695 | — |
 
-Thousands of reviews = noise unless you can answer:
-
-- Why are customers unhappy?
-- Which product feature is failing?
-- What should be fixed first?
-
-This project directly solves that.
-
----
-
-## 💡 Solution Overview
-
-An end-to-end ML pipeline that:
-
-- Processes raw customer reviews
-- Predicts sentiment using ML models
-- Extracts **aspect-level insights**
-- Explains predictions using LIME
-- Deploys everything in a **Streamlit web app**
+- Labels are **weak** (derived from star ratings); intra-annotator κ ≈ 0.15 caps what "accuracy" can even mean here.
+- The abstained bucket is dominated by genuinely ambiguous mixed reviews ("beautiful pattern but runs extremely small").
+- **The gate is the product.** Forcing a prediction on ambiguous text is a lie; abstaining is a feature.
 
 ---
 
-## 🏗️ System Architecture
+## Architecture
 
 ```
-
-Raw Reviews → Preprocessing → TF-IDF → ML Models → Predictions
-↓
-Aspect Extraction
-↓
-LIME Explainability
-↓
-Streamlit Dashboard
-
+Review ──> Doc DistilBERT (fp16 shards, frozen) ──> probs ──> τ-gate ──> 1–10 score / UNSURE
+                    │
+                    └──> sentences ──> ABSA consensus (quality/price/fit) ──> aspect chips
 ```
 
----
-
-## ⚙️ Tech Stack
-
-| Category        | Tools Used |
-|----------------|-----------|
-| Language       | Python |
-| ML Models      | Logistic Regression, Naive Bayes, Random Forest |
-| NLP            | NLTK |
-| Vectorization  | TF-IDF |
-| Explainability | LIME |
-| Deployment     | Streamlit |
+- FastAPI backend + dependency-free vanilla JS frontend (no build step)
+- Weights load from local `models/deploy/` or the HF Hub (`DOC_MODEL_ID` / `ABSA_MODEL_ID` env vars)
+- fp16-shard round-trip verified at 100.0% prediction agreement; int8 quantization tried and rejected
 
 ---
 
-## 🧠 Models & Performance
-
-| Model               | Accuracy |
-|--------------------|----------|
-| Logistic Regression | ~85% ✅ |
-| Naive Bayes         | ~82% |
-| Random Forest       | ~83% |
-
-👉 Logistic Regression performed best due to high-dimensional sparse features.
-
----
-
-## 🔍 Key Features
-
-🔥 **Multi-model comparison**  
-🔥 **Aspect-based sentiment analysis**  
-🔥 **Explainable AI (LIME)**  
-🔥 **Batch review processing**  
-🔥 **Interactive UI (Streamlit)**  
-
----
-
-## 📊 Key Insights from Data
-
-- 📌 Product **quality** has the strongest impact on sentiment  
-- 📌 **Size inconsistency** drives negative reviews  
-- 📌 **Shipping delays** hurt satisfaction significantly  
-- 📌 Mixed reviews expose limits of traditional ML models  
-
----
-
-## 🖥️ Demo Features
-
-- ✍️ Analyze a single review  
-- 📂 Upload CSV for batch analysis  
-- 🔍 Extract aspect-level sentiment  
-- 📊 Visualize prediction confidence  
-
----
-
-## 📁 Project Structure
-
-
----
-
-## 🚀 Run Locally
+## Run Locally
 
 ```bash
-git clone https://github.com/yourusername/sentiment-analysis-project.git
+git clone https://github.com/sandeep11mahendrakar/sentiment-analysis-project.git
 cd sentiment-analysis-project
 
 python -m venv venv
@@ -135,99 +57,47 @@ venv\Scripts\activate
 
 pip install -r requirements.txt
 
-cd apps
-streamlit run app.py
-````
+uvicorn apps.webapp.backend.main:app --host 0.0.0.0 --port 7860
+```
+
+Open http://localhost:7860 — two tabs: **Single Review** and **Batch CSV** (max 5,000 rows per batch).
+
+Tests: `python -m pytest apps\webapp\tests`
+
+Deploy (HF Space, Docker SDK): push `apps/webapp/Dockerfile` with `SPACE_README.md` front-matter; models load from the Hub at boot.
 
 ---
 
-## 📊 Dataset
+## Dataset
 
-* Women's E-commerce Reviews Dataset
-* Source: Kaggle
-* Clean, real-world customer feedback data
+Women's E-commerce Clothing Reviews (Kaggle) — ~23k real customer reviews.
 
 ---
 
-## 🎓 What I Learned
+## Project Structure
 
-* Building **end-to-end ML systems**
-* Feature engineering using TF-IDF
-* Comparing multiple ML models
-* Applying **Explainable AI (LIME)**
-* Deploying ML apps with Streamlit
-
----
-
-## 🚧 Limitations (Important — shows maturity)
-
-* Struggles with sarcasm and implicit sentiment
-* Aspect extraction is keyword-based (not semantic)
-* Traditional ML limits contextual understanding
-
----
-
-## 🔮 Future Improvements
-
-* 🚀 BERT fine-tuning
-* 🌍 Multi-language support
-* 🤖 Better aspect detection (NER / transformers)
-* ☁️ Cloud deployment (AWS / GCP)
-* 🎨 Improved UI/UX
-
----
-
-## 📬 Contact
-
-* Name: Sandeep
-* LinkedIn: [https://www.linkedin.com/in/sandeep-mahindrakar-336b972b9](https://www.linkedin.com/in/sandeep-mahindrakar-336b972b9)
-* GitHub: [https://github.com/sandeep11mahendrakar](https://github.com/sandeep11mahendrakar)
-
----
-
-## ⭐ Final Thought
-
-This project moves sentiment analysis from:
-
-❌ “Customers are unhappy”
-➡️
-✅ “Customers are unhappy because of *size inconsistency and shipping delays*”
-
----
-
-⭐ If you found this useful, consider giving it a star!
-
+```
+apps/webapp/        FastAPI backend + vanilla JS frontend + Dockerfile
+src/                training / evaluation / experiment scripts
+models/deploy/      frozen fp16 deploy weights (doc + absa)
+results/            metrics, gating analysis, error analysis
+docs/superpowers/   design spec + implementation plan for the webapp
+PROJECT_MEMORY.md   full engineering log / source of truth
 ```
 
 ---
 
-## Brutal truth (you need to hear this)
+## Limitations (read before trusting any number)
 
-Right now:
-- Your project is **good technically**
-- Your README was **holding it back hard**
-
-This version:
-- Positions you as someone who understands **real-world ML problems**
-- Shows **thinking**, not just coding
-- Makes recruiters see **impact**, not just accuracy
+- Weak-label provenance: stars → labels, not human sentiment annotation
+- Annotation ceiling κ ≈ 0.15 — absolute accuracy must be read against it
+- Committed bucket skews positive as τ rises
+- ABSA gold-set performance is directional only (n = 91)
+- English only; sarcasm and implicit sentiment remain hard
 
 ---
 
-## Next move (don’t ignore this)
+## Contact
 
-You’re still missing one thing:
-
-👉 **Add 1 GIF demo of your app**
-
-If you don’t:
-- People won’t click your live link
-- They won’t “feel” your project
-
-If you want, I’ll help you:
-- Create a clean demo GIF
-- Upgrade your LinkedIn post to match this level
-
-Just say.
-
-```
+**Sandeep Mahendrakar**
+[LinkedIn](https://www.linkedin.com/in/sandeep-mahindrakar-336b972b9) · [GitHub](https://github.com/sandeep11mahendrakar)

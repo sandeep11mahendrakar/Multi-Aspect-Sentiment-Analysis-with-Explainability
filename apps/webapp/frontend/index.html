@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sentiment Analysis Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Gated DistilBERT · doc-level + aspect consensus</p>
+      <h1>Sentiment Analysis <span class="accent">Pro</span></h1>
+      <p class="sub">Reviews scored 1–10 with − / ± / + bands. The model abstains —
+      <strong>UNSURE&nbsp;/&nbsp;MIXED</strong> — when it isn't confident enough to rate.</p>
+    </div>
+  </header>
+
+  <div id="banner" class="banner hidden"></div>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" id="tab-single" role="tab" aria-selected="true">Single Review</button>
+    <button class="tab" id="tab-batch" role="tab" aria-selected="false">Batch CSV</button>
+  </nav>
+
+  <!-- ============ SINGLE REVIEW ============ -->
+  <section id="panel-single" class="panel active">
+    <div class="card">
+      <label class="field-label" for="review-input">Paste a review</label>
+      <textarea id="review-input" rows="5"
+        placeholder="e.g. Beautiful pattern, soft fabric — but it runs extremely small…"></textarea>
+      <div class="chips-row">
+        <span class="chips-label">Try:</span>
+        <button class="chip preset" data-preset="Absolutely love this dress! The fabric is soft, the print is gorgeous, and the fit is perfect. Wore it three times already.">Clear positive</button>
+        <button class="chip preset" data-preset="Very disappointed. Cheap material, loose threads everywhere, and the color looks nothing like the photos. Returned.">Clear negative</button>
+        <button class="chip preset" data-preset="Beautiful pattern but runs extremely small. Quality feels okay for the price though sizing advice is confusing.">Tricky / mixed</button>
+      </div>
+      <button class="btn primary" id="predict-btn">Analyze review</button>
+    </div>
+
+    <div id="result-card" class="card result-card hidden">
+      <div class="result-grid">
+        <div class="dial-wrap">
+          <div id="dial" class="dial"><div class="dial-hole"><span id="dial-score">–</span></div></div>
+          <div id="marker" class="marker"></div>
+        </div>
+        <div class="result-info">
+          <div id="verdict" class="verdict"></div>
+          <div class="conf-row">
+            <span class="mini-label">Confidence</span>
+            <div class="conf-bar"><div id="conf-fill"></div></div>
+            <span id="conf-val" class="mono"></span>
+          </div>
+          <div id="probs-row" class="probs-row"></div>
+          <div id="aspects-row" class="aspects-row"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BATCH CSV ============ -->
+  <section id="panel-batch" class="panel">
+    <div class="card">
+      <label class="field-label">Upload a CSV with a reviews column</label>
+      <div id="dropzone" class="dropzone" tabindex="0">
+        <input type="file" id="csv-file" accept=".csv,text/csv" hidden>
+        <p class="dz-icon">⇪</p>
+        <p><strong>Drop a .csv here</strong> or click to browse</p>
+        <p class="mini-label">Max 5,000 rows · text column auto-detected (manual pick as fallback)</p>
+      </div>
+      <div id="col-confirm" class="col-confirm hidden">
+        <label class="field-label" for="col-select">Which column holds the reviews?</label>
+        <select id="col-select"></select>
+        <button class="btn primary small" id="col-go">Run analysis</button>
+      </div>
+      <div id="progress-wrap" class="progress-wrap hidden">
+        <div class="progress-head"><span id="prog-label">Processing…</span><span id="prog-pct" class="mono"></span></div>
+        <div class="progress-bar"><div id="prog-fill"></div></div>
+      </div>
+    </div>
+
+    <div id="summary-card" class="card summary-card hidden">
+      <h2>Batch summary</h2>
+      <div class="summary-grid">
+        <div class="stat"><span class="stat-num mono" id="st-total">–</span><span class="stat-lab">reviews</span></div>
+        <div class="stat"><span class="stat-num mono" id="st-mean">–</span><span class="stat-lab">mean score</span></div>
+        <div class="stat"><span class="stat-num mono" id="st-cov">–</span><span class="stat-lab">coverage</span></div>
+      </div>
+      <div id="dist" class="dist"></div>
+      <div class="table-wrap">
+        <table id="preview-table">
+          <thead><tr>
+            <th>#</th><th>Review</th><th>Score</th><th>Band</th><th>Conf.</th>
+            <th>Quality</th><th>Price</th><th>Fit</th>
+          </tr></thead>
+          <tbody id="preview-body"></tbody>
+        </table>
+      </div>
+      <button class="btn primary" id="download-btn">⬇ Download results CSV</button>
+    </div>
+  </section>
+
+  <footer class="footer card">
+    <h3>Model disclosures</h3>
+    <ul>
+      <li>Abstention gate τ&nbsp;=&nbsp;0.70 — predictions below this confidence are labeled
+        <em>UNSURE&nbsp;/&nbsp;MIXED</em> instead of forced.</li>
+      <li>Measured operating point: <strong>91.2% accuracy at 86.2% coverage</strong> on held-out data;
+        the abstained bucket is dominated by genuinely ambiguous mixed reviews.</li>
+      <li>Inter-annotator ceiling κ&nbsp;≈&nbsp;0.15 on this weak-labelled dataset — absolute numbers
+        should be read with that in mind; the gate, not raw accuracy, is the product.</li>
+      <li>Aspect chips come from a consensus ABSA model; shipping aspects are intentionally excluded.</li>
+    </ul>
+  </footer>
+
+</div>
+<script src="/app.js"></script>
+</body>
+</html>

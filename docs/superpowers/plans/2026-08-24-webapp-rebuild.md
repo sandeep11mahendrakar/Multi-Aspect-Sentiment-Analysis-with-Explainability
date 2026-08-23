@@ -39,11 +39,11 @@
   - `marker_from_band(band: str) -> str` returns `"−"|"±"|"+"`
   - `classify(probs) -> dict` → `{"unsure": bool, "score": float|None, "band": str|None, "sentiment": str|None, "confidence": float}` (confidence = max prob)
 
-- [ ] Step 1: Write failing tests (bounds 1..10, band edges floor rule, tau boundary at exactly 0.70 = committed, unsure has score None)
-- [ ] Step 2: Run pytest — FAIL
-- [ ] Step 3: Implement scoring.py
-- [ ] Step 4: pytest — PASS
-- [ ] Step 5: Commit `feat(webapp): scoring module with 1-10 scale and unsure gating`
+- [x] Step 1: Write failing tests (bounds 1..10, band edges floor rule, tau boundary at exactly 0.70 = committed, unsure has score None)
+- [x] Step 2: Run pytest — FAIL
+- [x] Step 3: Implement scoring.py
+- [x] Step 4: pytest — PASS
+- [x] Step 5: Commit `feat(webapp): scoring module with 1-10 scale and unsure gating`
 
 ### Task 2: inference.py (model loading + predict)
 
@@ -59,9 +59,9 @@
 
 Loader replicates E8 Phase 3 round-trip exactly: sorted fp16_shard_*.pt → torch.load cpu → strict load_state_dict → .float().eval(). For hub ids use snapshot_download then same shard path.
 
-- [ ] Step 1: Implement inference.py (loader + batch probs + absa aggregation)
-- [ ] Step 2: Manual smoke: load locally, run 3 known texts, confirm clear-pos/clear-neg/"beautiful pattern but runs extremely small"→unsure
-- [ ] Step 3: Commit `feat(webapp): frozen-weight inference loader (local + hub override)`
+- [x] Step 1: Implement inference.py (loader + batch probs + absa aggregation)
+- [x] Step 2: Manual smoke: load locally, run 3 known texts, confirm clear-pos/clear-neg/"beautiful pattern but runs extremely small"→unsure
+- [x] Step 3: Commit `feat(webapp): frozen-weight inference loader (local + hub override)`
 
 ### Task 3: FastAPI main.py + API tests (mocked inference)
 
@@ -81,11 +81,11 @@ Loader replicates E8 Phase 3 round-trip exactly: sorted fp16_shard_*.pt → torc
   - Summary: counts per band + unsure, mean committed score, coverage
 - Tests monkeypatch inference functions; assert sort order desc, unsure placement last, cap rejection, column fallback event.
 
-- [ ] Step 1: failing API tests
-- [ ] Step 2: run — FAIL
-- [ ] Step 3: implement main.py
-- [ ] Step 4: pytest — PASS
-- [ ] Step 5: commit `feat(webapp): FastAPI endpoints (predict, NDJSON batch, health)`
+- [x] Step 1: failing API tests
+- [x] Step 2: run — FAIL
+- [x] Step 3: implement main.py
+- [x] Step 4: pytest — PASS
+- [x] Step 5: commit `feat(webapp): FastAPI endpoints (predict, NDJSON batch, health)`
 
 ### Task 4: Frontend (index.html, style.css, app.js)
 
@@ -96,17 +96,17 @@ Loader replicates E8 Phase 3 round-trip exactly: sorted fp16_shard_*.pt → torc
 
 Design: "Pattern Paper" palette carried over (ink #1C2430, accent #3A5BC7, green #1F9D66, red #C93B3B, amber #C77E14, paper #F6F7F9, hairline #E4E8EE) as CSS variables; grid-paper background; Bricolage Grotesque headings + Inter body + IBM Plex Mono numerals via Google Fonts. Two tabs (Single Review / Batch CSV). Single tab: textarea + 3 example preset chips, result card with big score dial (conic-gradient colored by band), −/±/+ marker, confidence bar, aspect chips, UNSURE badge state. Batch tab: dropzone, column-confirm UI if column_select event, progress bar from progress events, summary panel (distribution bars, mean score, coverage), preview table, Download CSV button (client-side build per spec column/sort/section rules), footer disclosure (τ=.70, committed acc 91.2% @ coverage 86.2%, kappa ceiling note).
 
-- [ ] Step 1: write three files
-- [ ] Step 2: serve via uvicorn, verify in browser (playwright): tabs render, single-review flow works end-to-end
-- [ ] Step 3: commit `feat(webapp): vanilla JS frontend (single review + batch CSV)`
+- [x] Step 1: write three files
+- [x] Step 2: serve via uvicorn, verify in browser (playwright): tabs render, single-review flow works end-to-end
+- [x] Step 3: commit `feat(webapp): vanilla JS frontend (single review + batch CSV)`
 
 ### Task 5: End-to-end verification (local, real models)
 
-- [ ] Step 1: boot uvicorn headless, health 200
-- [ ] Step 2: curl /api/predict regression trio (clear pos @ high conf, clear neg, mixed→unsure)
-- [ ] Step 3: craft small test CSV (6 rows incl. 1-2 ambiguous), run through UI via playwright, download result CSV, verify sorting + unsure section + columns
-- [ ] Step 4: pytest full suite green
-- [ ] Step 5: commit any fixes `fix(webapp): e2e fixes`
+- [x] Step 1: boot uvicorn headless, health 200
+- [x] Step 2: curl /api/predict regression trio (clear pos @ high conf, clear neg, mixed→unsure)
+- [x] Step 3: craft small test CSV (6 rows incl. 1-2 ambiguous), run through UI via playwright, download result CSV, verify sorting + unsure section + columns
+- [x] Step 4: pytest full suite green
+- [x] Step 5: commit any fixes `fix(webapp): e2e fixes`
 
 ### Task 6: Dockerfile for HF Space
 
@@ -116,9 +116,9 @@ Design: "Pattern Paper" palette carried over (ink #1C2430, accent #3A5BC7, green
 
 CPU-only torch install (`--index-url https://download.pytorch.org/whl/cpu`), copy backend+frontend+src/sentence_splitter.py, uvicorn on $PORT (Space sets 7860), README front-matter block for Space (sdk: docker, app_port: 7860) saved as `apps/webapp/SPACE_README.md`.
 
-- [ ] Step 1: write Dockerfile + .dockerignore + SPACE_README.md
-- [ ] Step 2: docker build + run + health check IF docker available locally; else record manual step
-- [ ] Step 3: commit `feat(webapp): Dockerfile + Space config`
+- [x] Step 1: write Dockerfile + .dockerignore + SPACE_README.md
+- [x] Step 2: docker NOT available locally � recorded manual step (Space builds server-side)
+- [x] Step 3: commit `feat(webapp): Dockerfile + Space config`
 
 ### Task 7: Hugging Face Hub upload + model cards
 
@@ -128,25 +128,26 @@ CPU-only torch install (`--index-url https://download.pytorch.org/whl/cpu`), cop
 
 BLOCKER: requires Sandeep's HF token (`hf auth login` or HF_TOKEN env). If absent at execution time, pause and ask.
 
-- [ ] Step 1: check token availability
-- [ ] Step 2: write upload script + cards
+- [x] Step 1: check token availability (ABSENT � blocker recorded, upload script gates on HF_TOKEN)
+- [x] Step 2: write upload script + cards
 - [ ] Step 3: run upload once token available; verify re-download loads via DOC_MODEL_ID env
 - [ ] Step 4: flip public after verification (with Sandeep's OK)
-- [ ] Step 5: commit `feat: HF hub upload script + model cards`
+- [x] Step 5: commit `feat: HF hub upload script + model cards`
 
 ### Task 8: Cleanup + docs
 
-- [ ] Step 1: delete `apps/app.py` (replaced); keep labeling_app.py untouched (already abandoned but referenced in memory)
-- [ ] Step 2: update root `requirements.txt`: remove streamlit/plotly/Pillow, add fastapi/uvicorn/python-multipart
-- [ ] Step 3: README section: new app run instructions (`uvicorn apps.webapp.backend.main:app`), HF links (placeholders until Task 7 done)
-- [ ] Step 4: commit `chore: retire streamlit app, point repo at webapp`
+- [x] Step 1: delete `apps/app.py` (replaced); keep labeling_app.py untouched (already abandoned but referenced in memory)
+- [x] Step 2: update root `requirements.txt`: remove streamlit/plotly/Pillow, add fastapi/uvicorn/python-multipart
+- [x] Step 3: README section: new app run instructions (`uvicorn apps.webapp.backend.main:app`), HF links (placeholders until Task 7 done)
+- [x] Step 4: commit `chore: retire streamlit app, point repo at webapp`
 
 ### Task 9: PROJECT_MEMORY.md update
 
-- [ ] Step 1: add WEBAPP REBUILD section (what/where/how to run/deploy status), mark remaining issues #3 resolved
-- [ ] Step 2: commit `docs: project memory — webapp rebuild`
+- [x] Step 1: add WEBAPP REBUILD section (what/where/how to run/deploy status), mark remaining issues #3 resolved
+- [x] Step 2: commit `docs: project memory — webapp rebuild`
 
 ## Execution notes
 
 - Inline execution chosen by operator ("do the whole work phase-wise"); all tasks executed in-session with real-model verification at Tasks 2/5.
+
 

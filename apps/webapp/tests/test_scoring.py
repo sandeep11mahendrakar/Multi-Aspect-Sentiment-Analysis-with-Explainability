@@ -1,6 +1,12 @@
 import pytest
 
-from backend.scoring import TAU, band_from_score, classify, marker_from_score, score_from_probs
+from apps.webapp.backend.scoring import (
+    TAU,
+    band_from_score,
+    classify,
+    marker_from_score,
+    score_from_probs,
+)
 
 
 def test_score_bounds():

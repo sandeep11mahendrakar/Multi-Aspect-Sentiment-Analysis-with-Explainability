@@ -3,7 +3,7 @@
 > Lilly reads clothing reviews the way a stylist would — and an honest **"UNSURE / MIXED"** when even she can't tell.
 
 **Live demo (HF Space):** _pending first Space push_
-**Models on the HF Hub:** `sandeep11mahendrakar/lilly-fashion-muse-doc-gated` · `sandeep11mahendrakar/lilly-fashion-muse-absa` _(upload pending token)_
+**Models on the HF Hub:** `sandeep1103/lilly-fashion-muse-doc-gated` · `sandeep1103/lilly-fashion-muse-absa` _(upload pending token)_
 
 ---
 

@@ -24,7 +24,7 @@ sys.path.insert(0, REPO_ROOT)
 
 from huggingface_hub import HfApi  # noqa: E402
 
-OWNER = "sandeep11mahendrakar"
+OWNER = "sandeep1103"
 
 DOC_CARD = """\
 ---

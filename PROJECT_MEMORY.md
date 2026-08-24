@@ -152,7 +152,7 @@ NOTE 2026-08-24: apps/app.py (Streamlit) DELETED — replaced by apps/webapp (se
 BRANDING (2026-08-24, Sandeep's pick): model/app name = **Lilly**, category = **Fashion Muse**
 (femme persona, universal utility — reads menswear too; stated on-site + in cards).
 Everywhere consistent: site title "Lilly · Fashion Muse", HF repos
-sandeep11mahendrakar/lilly-fashion-muse-doc-gated + .../lilly-fashion-muse-absa,
+sandeep1103/lilly-fashion-muse-doc-gated + .../lilly-fashion-muse-absa,
 Dockerfile ENV defaults, upload script, model cards, README, CSV download name
 lilly_review_scores.csv. Historical spec/plan docs under docs/superpowers/ left as dated records.
 apps/app.py DELETED. New app: apps/webapp/ (FastAPI + vanilla JS, no build step).
@@ -172,10 +172,16 @@ apps/app.py DELETED. New app: apps/webapp/ (FastAPI + vanilla JS, no build step)
 - Dockerfile + SPACE_README.md (sdk: docker, app_port 7860) ready for HF Space; docker not
   available locally — build happens on Space push (manual step: verify cold boot).
 - src/experiments/upload_deploy_to_hf.py — uploads models/deploy/{doc,absa} (fp16 shards +
-  config + tokenizer, int8 EXCLUDED) to sandeep11mahendrakar/lilly-fashion-muse-doc-gated
+  config + tokenizer, int8 EXCLUDED) to sandeep1103/lilly-fashion-muse-doc-gated
   and .../lilly-fashion-muse-absa, private first, honest model cards inline.
-  BLOCKED ON: Sandeep's HF token (HF_TOKEN env or `hf auth login`); then verify
-  re-download via env override, flip public with Sandeep's OK.
+  UPLOADED + VERIFIED 2026-08-24: HF account is sandeep1103 (NOT the GitHub username);
+  fine-grained token w/ repo.write. Re-download from Hub via DOC_MODEL_ID/ABSA_MODEL_ID
+  env override -> probs IDENTICAL to local, regression trio PASS
+  (src/experiments/verify_hub_models.py). Repos currently PRIVATE — flip public with
+  Sandeep's OK via upload script --public or repo settings.
+  NOTE: Space deploy will need an HF_TOKEN secret (fine-grained, read access) to pull
+  the private models at boot.
+  SECURITY: the upload token was shared in chat — recommend rotating it after Space setup.
 - E2E VERIFIED with real models: regression trio (clear-pos 10.0+, clear-neg 1.6-,
   "beautiful pattern but runs extremely small" -> UNSURE @0.55); 6-row CSV batch: sorted
   desc, unsure sectioned last, coverage/mean correct; CSV download format verified.

@@ -1,0 +1,209 @@
+{
+  "total": 4529,
+  "errors": 658,
+  "error_rate": 0.1453,
+  "taxonomy": [
+    {
+      "true_label": "negative",
+      "wrong_pred": "neutral",
+      "n": 157,
+      "mean_conf": 0.6380000114440918,
+      "mean_words": 63.21,
+      "pct_negation": 0.535,
+      "pct_contrast": 0.739
+    },
+    {
+      "true_label": "negative",
+      "wrong_pred": "positive",
+      "n": 36,
+      "mean_conf": 0.7829999923706055,
+      "mean_words": 70.194,
+      "pct_negation": 0.5,
+      "pct_contrast": 0.806
+    },
+    {
+      "true_label": "neutral",
+      "wrong_pred": "negative",
+      "n": 105,
+      "mean_conf": 0.6769999861717224,
+      "mean_words": 60.267,
+      "pct_negation": 0.552,
+      "pct_contrast": 0.571
+    },
+    {
+      "true_label": "neutral",
+      "wrong_pred": "positive",
+      "n": 158,
+      "mean_conf": 0.8379999995231628,
+      "mean_words": 62.316,
+      "pct_negation": 0.443,
+      "pct_contrast": 0.671
+    },
+    {
+      "true_label": "positive",
+      "wrong_pred": "negative",
+      "n": 11,
+      "mean_conf": 0.6520000100135803,
+      "mean_words": 58.818,
+      "pct_negation": 0.636,
+      "pct_contrast": 0.364
+    },
+    {
+      "true_label": "positive",
+      "wrong_pred": "neutral",
+      "n": 191,
+      "mean_conf": 0.6330000162124634,
+      "mean_words": 67.277,
+      "pct_negation": 0.534,
+      "pct_contrast": 0.817
+    }
+  ],
+  "length_by_class_correctness": [
+    {
+      "label": 0,
+      "correct": false,
+      "count": 193,
+      "mean": 64.5,
+      "median": 64.0
+    },
+    {
+      "label": 0,
+      "correct": true,
+      "count": 281,
+      "mean": 56.8,
+      "median": 55.0
+    },
+    {
+      "label": 1,
+      "correct": false,
+      "count": 263,
+      "mean": 61.5,
+      "median": 59.0
+    },
+    {
+      "label": 1,
+      "correct": true,
+      "count": 302,
+      "mean": 64.0,
+      "median": 63.0
+    },
+    {
+      "label": 2,
+      "correct": false,
+      "count": 202,
+      "mean": 66.8,
+      "median": 70.0
+    },
+    {
+      "label": 2,
+      "correct": true,
+      "count": 3288,
+      "mean": 59.3,
+      "median": 58.0
+    }
+  ],
+  "accuracy_by_length_bin": {
+    "short25": 0.8943,
+    "mid-low": 0.836,
+    "mid-high": 0.864,
+    "long25": 0.8233
+  },
+  "negation_contrast_rates": {
+    "False": {
+      "has_negation": 0.5152,
+      "has_contrast": 0.7158
+    },
+    "True": {
+      "has_negation": 0.4074,
+      "has_contrast": 0.5603
+    }
+  },
+  "flow_profiles": {
+    "neg->neu": {
+      "n": 157,
+      "has_fit_size": 0.637,
+      "has_quality": 0.49,
+      "has_shipping": 0.025,
+      "has_negation": 0.535,
+      "has_contrast": 0.739,
+      "mean_rating": 1.78
+    },
+    "neg->pos": {
+      "n": 36,
+      "has_fit_size": 0.722,
+      "has_quality": 0.5,
+      "has_shipping": 0.028,
+      "has_negation": 0.5,
+      "has_contrast": 0.806,
+      "mean_rating": 1.89
+    },
+    "neg_correct": {
+      "n": 281,
+      "has_fit_size": 0.534,
+      "has_quality": 0.488,
+      "has_shipping": 0.05,
+      "has_negation": 0.573,
+      "has_contrast": 0.598,
+      "mean_rating": 1.61
+    },
+    "neu->pos": {
+      "n": 158,
+      "has_fit_size": 0.715,
+      "has_quality": 0.418,
+      "has_shipping": 0.051,
+      "has_negation": 0.443,
+      "has_contrast": 0.671,
+      "mean_rating": 3.0
+    },
+    "neu_correct": {
+      "n": 302,
+      "has_fit_size": 0.656,
+      "has_quality": 0.434,
+      "has_shipping": 0.043,
+      "has_negation": 0.52,
+      "has_contrast": 0.825,
+      "mean_rating": 3.0
+    },
+    "pos->neu": {
+      "n": 191,
+      "has_fit_size": 0.712,
+      "has_quality": 0.455,
+      "has_shipping": 0.01,
+      "has_negation": 0.534,
+      "has_contrast": 0.817,
+      "mean_rating": 4.16
+    }
+  },
+  "confidence": {
+    "False": 0.6991,
+    "True": 0.9343,
+    "pct_confident_wrong_gt08": 0.2143
+  },
+  "examples_neu_to_pos_high_conf": [
+    {
+      "text": "I love these pants! best fitting pants i've ever owned. flattering. stretchy/don't stretch out. i am so sad that retailer didn't plan well and stock enough. i bought the black, want the gray and all sizes but 25 and 31 a",
+      "rating": 3,
+      "prob_pos": 0.998
+    },
+    {
+      "text": "I bought 3 of these tops in different colors, the blue one had one sleeve noticeably shorter. sent it back. now less than 10 days later they are on sale. the style is darling and get many complements on the two i have. f",
+      "rating": 3,
+      "prob_pos": 0.997
+    },
+    {
+      "text": "Great item and very feminine. can be dressed up or down and fits true to size.",
+      "rating": 3,
+      "prob_pos": 0.997
+    },
+    {
+      "text": "This is a cute blouse. i get lots of compliments. i bought the natural color. super flattering. i bought my normal size in most retailer stuff and had to return for bigger. the chest area is a bit snug. had to send back ",
+      "rating": 3,
+      "prob_pos": 0.997
+    },
+    {
+      "text": "Beautiful sweater coat! love that is easy to pop on & head out. i did have to go to a seamstress and have the button moved as it was to large and boxy around my waist area.",
+      "rating": 3,
+      "prob_pos": 0.997
+    }
+  ]
+}

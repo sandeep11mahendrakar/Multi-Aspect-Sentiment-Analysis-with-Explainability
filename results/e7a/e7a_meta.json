@@ -1,0 +1,13 @@
+{
+  "seed": 42,
+  "n_rating3_usable": 2823,
+  "n_sampled": 200,
+  "n_round2": 50,
+  "quotas_by_predicted_class": {
+    "negative": 30,
+    "neutral": 142,
+    "positive": 28
+  },
+  "model": "C:\\Users\\sandeep\\pes\\vs code\\ml project\\sentiment-analysis-project\\models\\distilbert_3class_baseline",
+  "blinding": "labeling files contain only review_id + text; key file held separately"
+}

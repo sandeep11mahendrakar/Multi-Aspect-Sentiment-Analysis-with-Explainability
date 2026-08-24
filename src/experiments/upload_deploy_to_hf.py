@@ -139,6 +139,8 @@ def _upload_one(api: HfApi, local_dir: str, repo_id: str, card: str, private: bo
     patterns = ["fp16_shard_*.pt", "config.json", "tokenizer.json",
                 "tokenizer_config.json"]
     api.create_repo(repo_id=repo_id, private=private, exist_ok=True)
+    # create_repo(exist_ok=True) does NOT change visibility of an existing repo
+    api.update_repo_settings(repo_id=repo_id, private=private, repo_type="model")
     api.upload_file(
         path_or_fileobj=card.encode("utf-8"),
         path_in_repo="README.md",

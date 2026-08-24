@@ -1,0 +1,327 @@
+{
+  "distilbert_3class_baseline": {
+    "n_test": 4529,
+    "accuracy": 0.8547,
+    "macro_f1": 0.6952,
+    "weighted_f1": 0.8564,
+    "per_class": {
+      "negative": {
+        "precision": 0.7078,
+        "recall": 0.5928,
+        "f1": 0.6452,
+        "support": 474
+      },
+      "neutral": {
+        "precision": 0.4646,
+        "recall": 0.5345,
+        "f1": 0.4971,
+        "support": 565
+      },
+      "positive": {
+        "precision": 0.9443,
+        "recall": 0.9421,
+        "f1": 0.9432,
+        "support": 3490
+      }
+    },
+    "confusion_rows_true_cols_pred": [
+      [
+        281,
+        157,
+        36
+      ],
+      [
+        105,
+        302,
+        158
+      ],
+      [
+        11,
+        191,
+        3288
+      ]
+    ],
+    "train_time_seconds": 501.5,
+    "train_args": {
+      "model": "distilbert-base-uncased",
+      "max_len": 128,
+      "batch": 16,
+      "grad_accum": 2,
+      "lr": 2e-05,
+      "epochs": 4,
+      "fp16": true,
+      "early_stopping": "macro_f1, patience 3",
+      "device": "cuda",
+      "text": "raw Review Text (no TF-IDF preprocessing)"
+    }
+  },
+  "distilbert_3class_weighted": {
+    "n_test": 4529,
+    "accuracy": 0.8417,
+    "macro_f1": 0.6947,
+    "weighted_f1": 0.8518,
+    "per_class": {
+      "negative": {
+        "precision": 0.633,
+        "recall": 0.6477,
+        "f1": 0.6403,
+        "support": 474
+      },
+      "neutral": {
+        "precision": 0.4397,
+        "recall": 0.6,
+        "f1": 0.5075,
+        "support": 565
+      },
+      "positive": {
+        "precision": 0.9673,
+        "recall": 0.9072,
+        "f1": 0.9363,
+        "support": 3490
+      }
+    },
+    "confusion_rows_true_cols_pred": [
+      [
+        307,
+        143,
+        24
+      ],
+      [
+        143,
+        339,
+        83
+      ],
+      [
+        35,
+        289,
+        3166
+      ]
+    ],
+    "train_time_seconds": 514.0,
+    "train_args": {
+      "model": "distilbert-base-uncased",
+      "max_len": 128,
+      "batch": 16,
+      "grad_accum": 2,
+      "lr": 2e-05,
+      "epochs": 4,
+      "fp16": true,
+      "early_stopping": "macro_f1, patience 3",
+      "device": "cuda",
+      "text": "raw Review Text (no TF-IDF preprocessing)"
+    }
+  },
+  "distilbert_3class_baseline_lr3e-05_ep4": {
+    "n_test": 4529,
+    "accuracy": 0.8565,
+    "macro_f1": 0.6919,
+    "weighted_f1": 0.8586,
+    "per_class": {
+      "negative": {
+        "precision": 0.6759,
+        "recall": 0.5633,
+        "f1": 0.6145,
+        "support": 474
+      },
+      "neutral": {
+        "precision": 0.4738,
+        "recall": 0.5611,
+        "f1": 0.5138,
+        "support": 565
+      },
+      "positive": {
+        "precision": 0.9509,
+        "recall": 0.9441,
+        "f1": 0.9475,
+        "support": 3490
+      }
+    },
+    "confusion_rows_true_cols_pred": [
+      [
+        267,
+        176,
+        31
+      ],
+      [
+        109,
+        317,
+        139
+      ],
+      [
+        19,
+        176,
+        3295
+      ]
+    ],
+    "train_time_seconds": 511.2,
+    "train_args": {
+      "model": "distilbert-base-uncased",
+      "max_len": 128,
+      "batch": 16,
+      "grad_accum": 2,
+      "lr": 3e-05,
+      "epochs": 4,
+      "fp16": true,
+      "early_stopping": "macro_f1, patience 3",
+      "device": "cuda",
+      "text": "raw Review Text (no TF-IDF preprocessing)"
+    }
+  },
+  "distilbert_3class_baseline_lr2e-05_ep2": {
+    "n_test": 4529,
+    "accuracy": 0.8496,
+    "macro_f1": 0.6656,
+    "weighted_f1": 0.8465,
+    "per_class": {
+      "negative": {
+        "precision": 0.6151,
+        "recall": 0.6203,
+        "f1": 0.6176,
+        "support": 474
+      },
+      "neutral": {
+        "precision": 0.4605,
+        "recall": 0.4124,
+        "f1": 0.4351,
+        "support": 565
+      },
+      "positive": {
+        "precision": 0.9368,
+        "recall": 0.9516,
+        "f1": 0.9441,
+        "support": 3490
+      }
+    },
+    "confusion_rows_true_cols_pred": [
+      [
+        294,
+        136,
+        44
+      ],
+      [
+        152,
+        233,
+        180
+      ],
+      [
+        32,
+        137,
+        3321
+      ]
+    ],
+    "train_time_seconds": 252.1,
+    "train_args": {
+      "model": "distilbert-base-uncased",
+      "max_len": 128,
+      "batch": 16,
+      "grad_accum": 2,
+      "lr": 2e-05,
+      "epochs": 2,
+      "fp16": true,
+      "early_stopping": "macro_f1, patience 3",
+      "device": "cuda",
+      "text": "raw Review Text (no TF-IDF preprocessing)"
+    }
+  },
+  "distilbert_3class_baseline_textuallabels": {
+    "n_test": 4529,
+    "accuracy": 0.9028,
+    "macro_f1": 0.7609,
+    "weighted_f1": 0.9106,
+    "per_class": {
+      "negative": {
+        "precision": 0.8537,
+        "recall": 0.6753,
+        "f1": 0.7541,
+        "support": 579
+      },
+      "neutral": {
+        "precision": 0.4399,
+        "recall": 0.7881,
+        "f1": 0.5647,
+        "support": 302
+      },
+      "positive": {
+        "precision": 0.9802,
+        "recall": 0.9485,
+        "f1": 0.9641,
+        "support": 3648
+      }
+    },
+    "confusion_rows_true_cols_pred": [
+      [
+        391,
+        143,
+        45
+      ],
+      [
+        39,
+        238,
+        25
+      ],
+      [
+        28,
+        160,
+        3460
+      ]
+    ],
+    "train_time_seconds": 745.4,
+    "train_args": {
+      "model": "distilbert-base-uncased",
+      "max_len": 128,
+      "batch": 16,
+      "grad_accum": 2,
+      "lr": 2e-05,
+      "epochs": 4,
+      "fp16": true,
+      "early_stopping": "macro_f1, patience 3",
+      "device": "cuda",
+      "text": "raw Review Text (no TF-IDF preprocessing)",
+      "label_mode": "textual"
+    }
+  },
+  "distilbert_3class_baseline_textuallabels__vs_rating_labels": {
+    "n_test": 4529,
+    "accuracy": 0.8545,
+    "macro_f1": 0.6819,
+    "weighted_f1": 0.8527,
+    "per_class": {
+      "negative": {
+        "precision": 0.6419,
+        "recall": 0.6203,
+        "f1": 0.6309,
+        "support": 474
+      },
+      "neutral": {
+        "precision": 0.4806,
+        "recall": 0.4602,
+        "f1": 0.4702,
+        "support": 565
+      },
+      "positive": {
+        "precision": 0.9394,
+        "recall": 0.9501,
+        "f1": 0.9447,
+        "support": 3490
+      }
+    },
+    "confusion_rows_true_cols_pred": [
+      [
+        294,
+        135,
+        45
+      ],
+      [
+        136,
+        260,
+        169
+      ],
+      [
+        28,
+        146,
+        3316
+      ]
+    ],
+    "train_time_seconds": 745.4
+  }
+}

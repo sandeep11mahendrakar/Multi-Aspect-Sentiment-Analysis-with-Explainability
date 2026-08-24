@@ -1,0 +1,63 @@
+{
+  "run": "distilbert_absa_aspectconditioned",
+  "input_format": "[CLS] aspect [SEP] sentence [SEP]",
+  "max_len": 96,
+  "seed": 42,
+  "split": "GroupShuffleSplit by row_index (review-level, no leakage)",
+  "shipping_excluded": true,
+  "class_weights_balanced": [
+    2.5151932433673,
+    3.2213991769547325,
+    0.4363016752659405
+  ],
+  "weak_heldout": {
+    "n_test": 7013,
+    "accuracy": 0.7358,
+    "macro_f1": 0.5675,
+    "recall_neg": 0.4945,
+    "recall_neu": 0.4308,
+    "recall_pos": 0.8266,
+    "confusion_rows_true_cols_pred": [
+      [
+        493,
+        274,
+        230
+      ],
+      [
+        179,
+        333,
+        261
+      ],
+      [
+        239,
+        670,
+        4334
+      ]
+    ],
+    "per_aspect": {
+      "quality": {
+        "n": 1883,
+        "recall_neg": 0.5447,
+        "recall_neu": 0.3837,
+        "recall_pos": 0.8474,
+        "macro_f1": 0.588
+      },
+      "price": {
+        "n": 417,
+        "recall_neg": 0.7048,
+        "recall_neu": 0.3125,
+        "recall_pos": 0.8295,
+        "macro_f1": 0.607
+      },
+      "fit": {
+        "n": 4713,
+        "recall_neg": 0.422,
+        "recall_neu": 0.4667,
+        "recall_pos": 0.8191,
+        "macro_f1": 0.5447
+      }
+    }
+  },
+  "train_time_seconds": 810.9,
+  "note": "weak held-out labels are the SAME proxy labels used for training -> secondary/sanity only. PRIMARY eval = human gold set (results/e7b_path_b/absa_gold_labeling.xlsx) once labeled."
+}

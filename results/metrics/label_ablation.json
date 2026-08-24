@@ -1,0 +1,228 @@
+{
+  "A_3class_baseline": {
+    "name": "A) 3-class baseline (all ratings)",
+    "n": 4529,
+    "class_distribution": {
+      "negative": 474,
+      "neutral": 565,
+      "positive": 3490
+    },
+    "accuracy": 0.8223,
+    "macro_f1": 0.5727,
+    "weighted_f1": 0.7973,
+    "per_class": {
+      "negative": {
+        "precision": 0.6052,
+        "recall": 0.443,
+        "f1": 0.5116,
+        "support": 474
+      },
+      "neutral": {
+        "precision": 0.4256,
+        "recall": 0.2177,
+        "f1": 0.2881,
+        "support": 565
+      },
+      "positive": {
+        "precision": 0.8711,
+        "recall": 0.9716,
+        "f1": 0.9186,
+        "support": 3490
+      }
+    },
+    "confusion_rows_true_cols_pred": [
+      [
+        210,
+        100,
+        164
+      ],
+      [
+        104,
+        123,
+        338
+      ],
+      [
+        33,
+        66,
+        3391
+      ]
+    ],
+    "labels_order": [
+      "negative",
+      "neutral",
+      "positive"
+    ]
+  },
+  "B_binary_drop_rating3": {
+    "name": "B) binary (rating==3 removed)",
+    "n": 3964,
+    "class_distribution": {
+      "negative": 474,
+      "positive": 3490
+    },
+    "accuracy": 0.9281,
+    "macro_f1": 0.7868,
+    "weighted_f1": 0.9189,
+    "per_class": {
+      "negative": {
+        "precision": 0.8593,
+        "recall": 0.4768,
+        "f1": 0.6133,
+        "support": 474
+      },
+      "positive": {
+        "precision": 0.933,
+        "recall": 0.9894,
+        "f1": 0.9604,
+        "support": 3490
+      }
+    },
+    "confusion_rows_true_cols_pred": [
+      [
+        226,
+        248
+      ],
+      [
+        37,
+        3453
+      ]
+    ],
+    "labels_order": [
+      "negative",
+      "positive"
+    ]
+  },
+  "B_deployed_on_full_test_forced_choice": {
+    "name": "B-deployed) binary forced-choice on full 3-class test",
+    "n": 4529,
+    "class_distribution": {
+      "negative": 474,
+      "neutral": 565,
+      "positive": 3490
+    },
+    "accuracy": 0.8123,
+    "macro_f1": 0.4737,
+    "weighted_f1": 0.7528,
+    "per_class": {
+      "negative": {
+        "precision": 0.558,
+        "recall": 0.4768,
+        "f1": 0.5142,
+        "support": 474
+      },
+      "neutral": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 565
+      },
+      "positive": {
+        "precision": 0.8373,
+        "recall": 0.9894,
+        "f1": 0.907,
+        "support": 3490
+      }
+    },
+    "confusion_rows_true_cols_pred": [
+      [
+        226,
+        0,
+        248
+      ],
+      [
+        142,
+        0,
+        423
+      ],
+      [
+        37,
+        0,
+        3453
+      ]
+    ],
+    "labels_order": [
+      "negative",
+      "neutral",
+      "positive"
+    ],
+    "note": "model cannot output neutral; every true-neutral is a guaranteed error"
+  },
+  "C_binary_plus_tau_routing": {
+    "name": "C) binary + tau-routing (tau=0.7, chosen on train OOF)",
+    "n": 4529,
+    "class_distribution": {
+      "negative": 474,
+      "neutral": 565,
+      "positive": 3490
+    },
+    "accuracy": 0.8267,
+    "macro_f1": 0.5824,
+    "weighted_f1": 0.8085,
+    "per_class": {
+      "negative": {
+        "precision": 0.7316,
+        "recall": 0.2932,
+        "f1": 0.4187,
+        "support": 474
+      },
+      "neutral": {
+        "precision": 0.4156,
+        "recall": 0.3876,
+        "f1": 0.4011,
+        "support": 565
+      },
+      "positive": {
+        "precision": 0.8882,
+        "recall": 0.9702,
+        "f1": 0.9274,
+        "support": 3490
+      }
+    },
+    "confusion_rows_true_cols_pred": [
+      [
+        139,
+        211,
+        124
+      ],
+      [
+        44,
+        219,
+        302
+      ],
+      [
+        7,
+        97,
+        3386
+      ]
+    ],
+    "labels_order": [
+      "negative",
+      "neutral",
+      "positive"
+    ],
+    "tau": 0.7,
+    "tau_selection": "max macro-F1 on 5-fold OOF train probs"
+  },
+  "_digest": {
+    "A_3class": {
+      "accuracy": 0.8223,
+      "macro_f1": 0.5727,
+      "weighted_f1": 0.7973
+    },
+    "B_binary_own_test": {
+      "accuracy": 0.9281,
+      "macro_f1": 0.7868,
+      "weighted_f1": 0.9189
+    },
+    "B_deployed_full_test": {
+      "accuracy": 0.8123,
+      "macro_f1": 0.4737,
+      "weighted_f1": 0.7528
+    },
+    "C_tau_routed_full_test": {
+      "accuracy": 0.8267,
+      "macro_f1": 0.5824,
+      "weighted_f1": 0.8085
+    }
+  }
+}

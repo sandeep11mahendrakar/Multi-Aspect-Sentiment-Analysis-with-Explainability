@@ -1,0 +1,33 @@
+{
+  "model_dir": "models\\distilbert_absa_aspectconditioned_consensus",
+  "n_labeled": 91,
+  "accuracy": 0.4505,
+  "macro_f1": 0.4466,
+  "precision": {
+    "negative": 0.9048,
+    "neutral": 0.2745,
+    "positive": 0.4211
+  },
+  "recall": {
+    "negative": 0.38,
+    "neutral": 0.6364,
+    "positive": 0.4211
+  },
+  "confusion_rows_human_cols_pred": [
+    [
+      19,
+      27,
+      4
+    ],
+    [
+      1,
+      14,
+      7
+    ],
+    [
+      1,
+      10,
+      8
+    ]
+  ]
+}

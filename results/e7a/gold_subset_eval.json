@@ -1,0 +1,52 @@
+{
+  "n": 199,
+  "human_dist": {
+    "negative": 82,
+    "neutral": 56,
+    "positive": 61
+  },
+  "models": {
+    "distilbert_3class_baseline": {
+      "accuracy": 0.3719,
+      "macro_f1": 0.3665,
+      "confusion_rows_human_cols_pred": [
+        [
+          18,
+          63,
+          1
+        ],
+        [
+          7,
+          39,
+          10
+        ],
+        [
+          5,
+          39,
+          17
+        ]
+      ]
+    },
+    "distilbert_3class_baseline_textuallabels": {
+      "accuracy": 0.397,
+      "macro_f1": 0.3941,
+      "confusion_rows_human_cols_pred": [
+        [
+          20,
+          58,
+          4
+        ],
+        [
+          6,
+          39,
+          11
+        ],
+        [
+          6,
+          35,
+          20
+        ]
+      ]
+    }
+  }
+}

@@ -4,3 +4,6 @@ models/*.pkl
 __pycache__/
 .ipynb_checkpoints/
 backup_pre_hf_upload/
+
+models/
+results/**/int8_state_dict.pt

@@ -1,0 +1,66 @@
+{
+  "n_pairs_scored": 34955,
+  "overall_disagreement": 0.2951,
+  "by_aspect": {
+    "fit": {
+      "n": 23016,
+      "disagreement": 0.2849
+    },
+    "price": {
+      "n": 2107,
+      "disagreement": 0.3014
+    },
+    "quality": {
+      "n": 9288,
+      "disagreement": 0.313
+    },
+    "shipping": {
+      "n": 544,
+      "disagreement": 0.3971
+    }
+  },
+  "by_source": {
+    "model_relabel": {
+      "n": 5117,
+      "disagreement": 0.5144
+    },
+    "rating": {
+      "n": 29838,
+      "disagreement": 0.2575
+    }
+  },
+  "proxy_vs_sentence_confusion": {
+    "negative": {
+      "negative": 2188,
+      "neutral": 720,
+      "positive": 1015
+    },
+    "neutral": {
+      "negative": 1521,
+      "neutral": 1695,
+      "positive": 4711
+    },
+    "positive": {
+      "negative": 1084,
+      "neutral": 1264,
+      "positive": 20757
+    }
+  },
+  "per_proxy_class": {
+    "negative": {
+      "negative": 0.4565,
+      "neutral": 0.3173,
+      "positive": 0.2262
+    },
+    "neutral": {
+      "negative": 0.1957,
+      "neutral": 0.4607,
+      "positive": 0.3436
+    },
+    "positive": {
+      "negative": 0.0383,
+      "neutral": 0.1779,
+      "positive": 0.7838
+    }
+  }
+}

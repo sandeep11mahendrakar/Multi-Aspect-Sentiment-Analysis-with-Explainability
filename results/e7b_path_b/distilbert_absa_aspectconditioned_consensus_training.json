@@ -1,0 +1,64 @@
+{
+  "run": "distilbert_absa_aspectconditioned_consensus",
+  "pairs_csv": "data\\processed\\aspect_sentiment_pairs_consensus.csv",
+  "input_format": "[CLS] aspect [SEP] sentence [SEP]",
+  "max_len": 96,
+  "seed": 42,
+  "split": "GroupShuffleSplit by row_index (review-level, no leakage)",
+  "shipping_excluded": true,
+  "class_weights_balanced": [
+    3.892614770459082,
+    4.7589067837969745,
+    0.3947933114701
+  ],
+  "weak_heldout": {
+    "n_test": 4810,
+    "accuracy": 0.9622,
+    "macro_f1": 0.8688,
+    "recall_neg": 0.8789,
+    "recall_neu": 0.7417,
+    "recall_pos": 0.9868,
+    "confusion_rows_true_cols_pred": [
+      [
+        363,
+        49,
+        1
+      ],
+      [
+        24,
+        224,
+        54
+      ],
+      [
+        1,
+        53,
+        4041
+      ]
+    ],
+    "per_aspect": {
+      "quality": {
+        "n": 1200,
+        "recall_neg": 0.9136,
+        "recall_neu": 0.7143,
+        "recall_pos": 0.9832,
+        "macro_f1": 0.8694
+      },
+      "price": {
+        "n": 280,
+        "recall_neg": 0.9531,
+        "recall_neu": 0.65,
+        "recall_pos": 0.9694,
+        "macro_f1": 0.8456
+      },
+      "fit": {
+        "n": 3330,
+        "recall_neg": 0.8235,
+        "recall_neu": 0.7626,
+        "recall_pos": 0.9891,
+        "macro_f1": 0.8643
+      }
+    }
+  },
+  "train_time_seconds": 403.7,
+  "note": "weak held-out labels are the SAME proxy labels used for training -> secondary/sanity only. PRIMARY eval = human gold set (results/e7b_path_b/absa_gold_labeling.xlsx) once labeled."
+}

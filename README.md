@@ -1,20 +1,21 @@
-# 🎯 Sentiment Analysis Pro — Gated DistilBERT + Aspect Sentiment
+# 🌸 Lilly · Fashion Muse
 
-> Not just *what* customers feel — but *why*, and an honest **"I'm not sure"** when the model can't tell.
+> Lilly reads clothing reviews the way a stylist would — and an honest **"UNSURE / MIXED"** when even she can't tell.
 
 **Live demo (HF Space):** _pending first Space push_
-**Models on the HF Hub:** _pending upload — see `src/experiments/upload_deploy_to_hf.py`_
+**Models on the HF Hub:** `sandeep11mahendrakar/lilly-fashion-muse-doc-gated` · `sandeep11mahendrakar/lilly-fashion-muse-absa` _(upload pending token)_
 
 ---
 
-## What This Project Does
+## What Lilly Does
 
-Most sentiment systems force every review into positive / negative. This one doesn't:
+Most sentiment systems force every review into positive / negative. Lilly doesn't:
 
 - **Doc-level sentiment** with a fine-tuned DistilBERT, scored on a **1–10 scale** with − / ± / + bands
-- **Selective prediction:** below confidence **τ = 0.70** the model **abstains** (`UNSURE / MIXED`) instead of guessing
+- **Selective prediction:** below confidence **τ = 0.70** Lilly **abstains** (`UNSURE / MIXED`) instead of guessing
 - **Aspect-based sentiment** (quality / price / fit) via a consensus-filtered ABSA model
 - **Batch CSV → scored CSV:** sorted by score, unsure rows sectioned at the bottom, summary dashboard included
+- Trained on women's e-commerce reviews, but reads **any** product review — menswear included
 
 ---
 
@@ -79,7 +80,7 @@ Women's E-commerce Clothing Reviews (Kaggle) — ~23k real customer reviews.
 ```
 apps/webapp/        FastAPI backend + vanilla JS frontend + Dockerfile
 src/                training / evaluation / experiment scripts
-models/deploy/      frozen fp16 deploy weights (doc + absa)
+models/deploy/      frozen fp16 deploy weights (Lilly doc + absa)
 results/            metrics, gating analysis, error analysis
 docs/superpowers/   design spec + implementation plan for the webapp
 PROJECT_MEMORY.md   full engineering log / source of truth

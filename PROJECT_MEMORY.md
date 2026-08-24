@@ -1,6 +1,6 @@
 # PROJECT MEMORY — Sentiment Analysis Project
 > Context file for continuing work in future sessions. Update after major changes.
-> Last updated: 2026-08-24 (webapp rebuild complete - FastAPI replaces Streamlit; HF push pending token)
+> Last updated: 2026-08-24 (webapp rebuild complete; model branded "Lilly · Fashion Muse"; HF push pending token)
 >
 > **RECONSTRUCTION NOTE (2026-08-24):** the original file was accidentally truncated during a
 > botched in-place edit and no backup existed. This version was rebuilt from (a) verbatim
@@ -149,6 +149,12 @@ predict path: clear-pos -> positive @1.00 | clear-neg -> negative @.92 |
 NOTE 2026-08-24: apps/app.py (Streamlit) DELETED — replaced by apps/webapp (see below).
 
 ## WEBAPP REBUILD (COMPLETE 2026-08-24 — replaces Streamlit; HF push pending token)
+BRANDING (2026-08-24, Sandeep's pick): model/app name = **Lilly**, category = **Fashion Muse**
+(femme persona, universal utility — reads menswear too; stated on-site + in cards).
+Everywhere consistent: site title "Lilly · Fashion Muse", HF repos
+sandeep11mahendrakar/lilly-fashion-muse-doc-gated + .../lilly-fashion-muse-absa,
+Dockerfile ENV defaults, upload script, model cards, README, CSV download name
+lilly_review_scores.csv. Historical spec/plan docs under docs/superpowers/ left as dated records.
 apps/app.py DELETED. New app: apps/webapp/ (FastAPI + vanilla JS, no build step).
 - Run: `uvicorn apps.webapp.backend.main:app --port 7860` (repo root). Tests: `pytest apps\webapp\tests`.
 - backend/scoring.py — pure: probs -> 1-10 score `1 + 9*(p_pos + 0.5*p_neu)`, bands by floor
@@ -166,8 +172,8 @@ apps/app.py DELETED. New app: apps/webapp/ (FastAPI + vanilla JS, no build step)
 - Dockerfile + SPACE_README.md (sdk: docker, app_port 7860) ready for HF Space; docker not
   available locally — build happens on Space push (manual step: verify cold boot).
 - src/experiments/upload_deploy_to_hf.py — uploads models/deploy/{doc,absa} (fp16 shards +
-  config + tokenizer, int8 EXCLUDED) to sandeep11mahendrakar/distilbert-sentiment-doc-gated
-  and .../distilbert-absa-consensus, private first, honest model cards inline.
+  config + tokenizer, int8 EXCLUDED) to sandeep11mahendrakar/lilly-fashion-muse-doc-gated
+  and .../lilly-fashion-muse-absa, private first, honest model cards inline.
   BLOCKED ON: Sandeep's HF token (HF_TOKEN env or `hf auth login`); then verify
   re-download via env override, flip public with Sandeep's OK.
 - E2E VERIFIED with real models: regression trio (clear-pos 10.0+, clear-neg 1.6-,

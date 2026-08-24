@@ -1,8 +1,8 @@
-"""Upload the frozen E8 deploy models to the Hugging Face Hub.
+"""Upload Lilly's frozen E8 deploy models to the Hugging Face Hub.
 
 Uploads models/deploy/{doc,absa} as two PRIVATE model repos:
-  <owner>/distilbert-sentiment-doc-gated
-  <owner>/distilbert-absa-consensus
+  <owner>/lilly-fashion-muse-doc-gated
+  <owner>/lilly-fashion-muse-absa
 
 Only the verified fp16-shard artifacts ship (fp16_shard_*.pt + config +
 tokenizer). int8_state_dict.pt is excluded: int8 dynamic quantization was
@@ -40,7 +40,8 @@ library_name: transformers
 
 # DistilBERT Sentiment (doc-level, confidence-gated)
 
-3-class doc-level review sentiment (negative / neutral / positive) with a
+**Lilly · Fashion Muse** — doc-level review scorer. 3-class doc-level review
+sentiment (negative / neutral / positive) with a
 **selective-prediction gate**: predictions whose max softmax probability is
 below **tau = 0.70** are abstained (UNSURE / MIXED) instead of forced.
 
@@ -104,7 +105,8 @@ library_name: transformers
 
 # DistilBERT ABSA (aspect consensus)
 
-Aspect-level sentiment for **quality / price / fit** (shipping intentionally
+**Lilly · Fashion Muse** — aspect side. Aspect-level sentiment for
+**quality / price / fit** (shipping intentionally
 excluded) on fashion e-commerce reviews. Input format: sentence + aspect pair.
 
 ## Provenance
@@ -166,9 +168,9 @@ def main():
     api = HfApi(token=token)
     jobs = [
         (os.path.join(REPO_ROOT, "models", "deploy", "doc"),
-         f"{OWNER}/distilbert-sentiment-doc-gated", DOC_CARD),
+         f"{OWNER}/lilly-fashion-muse-doc-gated", DOC_CARD),
         (os.path.join(REPO_ROOT, "models", "deploy", "absa"),
-         f"{OWNER}/distilbert-absa-consensus", ABSA_CARD),
+         f"{OWNER}/lilly-fashion-muse-absa", ABSA_CARD),
     ]
     for local_dir, repo_id, card in jobs:
         if not os.path.isdir(local_dir):

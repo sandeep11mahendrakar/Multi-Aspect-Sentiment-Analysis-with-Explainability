@@ -1,4 +1,4 @@
-"""FastAPI app for Sentiment Analysis Pro webapp.
+"""FastAPI app for the Lilly - Fashion Muse webapp.
 
 Serves the vanilla-JS frontend from frontend/ and a small JSON/NDJSON API
 around the frozen E8 deploy models. Run from repo root:
@@ -175,7 +175,7 @@ def batch(
     return StreamingResponse(stream(), media_type="application/x-ndjson")
 
 
-app = FastAPI(title="Sentiment Analysis Pro", docs_url=None, redoc_url=None)
+app = FastAPI(title="Lilly - Fashion Muse", docs_url=None, redoc_url=None)
 app.include_router(api)
 
 
@@ -190,3 +190,4 @@ def static(static_file: str):
     if not os.path.isfile(path):
         raise HTTPException(404)
     return FileResponse(path)
+

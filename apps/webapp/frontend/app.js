@@ -302,7 +302,7 @@ $("download-btn").addEventListener("click", () => {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = "sentiment_results.csv";
+  a.download = "lilly_review_scores.csv";
   a.click();
   URL.revokeObjectURL(url);
 });

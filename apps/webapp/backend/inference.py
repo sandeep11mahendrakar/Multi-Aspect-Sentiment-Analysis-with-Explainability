@@ -1,4 +1,4 @@
-"""Model loading + prediction for the frozen E8 deploy artifacts.
+"""Model loading + prediction for Lilly's frozen E8 deploy artifacts.
 
 Weights are FROZEN (E8 Phase 3). Loading replicates the verified fp16-shard
 round-trip exactly: sorted fp16_shard_*.pt -> torch.load(cpu) -> strict

@@ -16,9 +16,10 @@ COPY src/sentence_splitter.py /app/src/sentence_splitter.py
 RUN touch /app/apps/__init__.py /app/apps/webapp/__init__.py \
     /app/apps/webapp/backend/__init__.py /app/src/__init__.py
 
-ENV DOC_MODEL_ID=sandeep11mahendrakar/distilbert-sentiment-doc-gated
-ENV ABSA_MODEL_ID=sandeep11mahendrakar/distilbert-absa-consensus
+ENV DOC_MODEL_ID=sandeep11mahendrakar/lilly-fashion-muse-doc-gated
+ENV ABSA_MODEL_ID=sandeep11mahendrakar/lilly-fashion-muse-absa
 ENV HF_HOME=/tmp/hf_cache
 
 EXPOSE 7860
 CMD ["uvicorn", "apps.webapp.backend.main:app", "--host", "0.0.0.0", "--port", "7860"]
+
